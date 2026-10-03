@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard - IMSOFINE 9th Edition</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <style>
+        .leaderboard-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            width: 100%;
+            flex: 1;
+        }
+        .leaderboard-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .leaderboard-header h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        .rank-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            border-left: 5px solid transparent;
+        }
+        .rank-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            min-width: 60px;
+            text-align: center;
+        }
+        .rank-1 {
+            border-left-color: #FFD700;
+            background: linear-gradient(to right, #fffdf0, #ffffff);
+        }
+        .rank-2 {
+            border-left-color: #C0C0C0;
+            background: linear-gradient(to right, #f8f8f8, #ffffff);
+        }
+        .rank-3 {
+            border-left-color: #CD7F32;
+            background: linear-gradient(to right, #fffaf0, #ffffff);
+        }
+        .student-details {
+            flex: 1;
+            padding-left: 1rem;
+        }
+        .student-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 0.2rem;
+        }
+        .team-name {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .score-pill {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        .nav-links {
+            margin-top: 2rem;
+            text-align: center;
+        }
+        .nav-links a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            margin: 0 10px;
+        }
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <h1>IMSOFINE <span class="edition">9th Edition</span></h1>
+            <p class="institution">Live Leaderboard</p>
+        </div>
+    </header>
+
+    <div class="leaderboard-container">
+        <div class="leaderboard-header">
+            <h2>Top Participants</h2>
+        </div>
+
+        <div id="leaderboard-list">
+            <div style="text-align:center; padding: 3rem;">Loading rankings...</div>
+        </div>
+        
+        <div class="nav-links">
+            <a href="index.html">← Back to Home</a>
+            <a href="admin-dashboard.html">Admin Dashboard</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Organized by Event Core | IMSOFINE</p>
+    </footer>
+
+    <script>
+        const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTKx4D_HEzMWIJORH9R2rnTcSiiMDPgXijvliOc_12wjSM5vpAu-zc-sZK-MOrRcRIbYqHfu_NaNp1M/pub?output=csv';
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            Papa.parse(csvUrl, {
+                download: true,
+                header: true,
+                complete: function(results) {
+                    const data = results.data.filter(row => row.Student_ID && row.Student_ID.trim() !== ''); 
+                    renderLeaderboard(data);
+                },
+                error: function(err) {
+                    console.error(err);
+                    document.getElementById('leaderboard-list').innerHTML = '<div style="text-align:center;color:red;padding: 3rem;">Failed to load data. Please check your network connection and ensure the Google Sheet is public.</div>';
+                }
+            });
+        });
+
+        function renderLeaderboard(data) {
+            const container = document.getElementById('leaderboard-list');
+            container.innerHTML = '';
+
+            // Calculate points based on Rank_or_Result column
+            // Assigning hypothetical points: 1st (10), 2nd (7), 3rd (5) for demonstration
+            data.forEach(student => {
+                let score = 0;
+                const result = (student.Rank_or_Result || '').toLowerCase();
+                
+                if (result.includes('1st') || result.includes('first')) score += 10;
+                else if (result.includes('2nd') || result.includes('second')) score += 7;
+                else if (result.includes('3rd') || result.includes('third')) score += 5;
+                else if (result !== '') score += 1; // 1 point for any other listed result
+                
+                student.score = score;
+            });
+
+            // Filter to students with points and sort descending
+            const rankedData = data.filter(s => s.score > 0).sort((a, b) => b.score - a.score);
+
+            if (rankedData.length === 0) {
+                container.innerHTML = '<div style="text-align:center; padding: 3rem; color: #666;">No ranked results published yet.</div>';
+                return;
+            }
+
+            rankedData.forEach((student, index) => {
+                const rank = index + 1;
+                const card = document.createElement('div');
+                card.className = `rank-card rank-${rank}`;
+
+                let rankIcon = `#${rank}`;
+                if(rank === 1) rankIcon = '🥇';
+                if(rank === 2) rankIcon = '🥈';
+                if(rank === 3) rankIcon = '🥉';
+
+                card.innerHTML = `
+                    <div class="rank-number">${rankIcon}</div>
+                    <div class="student-details">
+                        <div class="student-name">${student.Name || 'Unknown'}</div>
+                        <div class="team-name">${student.Team_Name || 'No Team'}</div>
+                    </div>
+                    <div class="score-pill">${student.score} pts</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
