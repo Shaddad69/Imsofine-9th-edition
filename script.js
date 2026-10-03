@@ -1,4 +1,4 @@
-const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTKx4D_HEzMWIJORH9R2rnTcSiiMDPgXijvliOc_12wjSM5vpAu-zc-sZK-MOrRcRIbYqHfu_NaNp1M/pub?output=csv';
+const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTKx4D_HEzMWIJORH9R2rnTcSiIMDPgXijvliOc_12wJSM5vPAu-zC-sZK-MOrRcRIbYQhfu_NaNp1M/pub?gid=0&single=true&output=csv';
 
 document.addEventListener('DOMContentLoaded', () => {
     const landingView = document.getElementById('landing-view');

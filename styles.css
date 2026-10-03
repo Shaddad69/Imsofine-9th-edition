@@ -232,3 +232,87 @@ footer {
     color: #aaa;
     font-size: 0.9rem;
 }
+
+/* Central Hub Styles */
+.hub-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.hub-header h2 {
+    color: var(--primary-color);
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.hub-header p {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+.hub-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .hub-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.hub-card {
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    text-decoration: none;
+    color: var(--text-color);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 2px solid transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hub-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.hub-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(74, 0, 224, 0.12);
+}
+
+.hub-card:hover::before {
+    opacity: 1;
+}
+
+.hub-icon {
+    font-size: 3.5rem;
+    margin-bottom: 1.2rem;
+    /* Use solid emoji or SVG since gradient text on emojis doesn't always render consistently across OS */
+}
+
+.hub-card h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+    color: var(--primary-color);
+}
+
+.hub-card p {
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.5;
+}
