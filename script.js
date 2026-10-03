@@ -3,7 +3,10 @@ const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTKx4D_HEzMWIJOR
 document.addEventListener('DOMContentLoaded', () => {
     const landingView = document.getElementById('landing-view');
     const dashboardView = document.getElementById('dashboard-view');
+    const unlockView = document.getElementById('unlock-view');
     const homeBtn = document.getElementById('home-btn');
+    const unlockBtn = document.getElementById('unlock-btn');
+    const bgMusic = document.getElementById('bg-music');
 
     const urlParams = new URLSearchParams(window.location.search);
     const studentId = urlParams.get('id');
@@ -15,16 +18,38 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     homeBtn.addEventListener('click', () => {
+        // Pause and reset music when going back to the home page
+        if (bgMusic) {
+            bgMusic.pause();
+            bgMusic.currentTime = 0;
+        }
         const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
         window.history.pushState({path:newUrl}, '', newUrl);
         showView(landingView);
     });
 
+    if (unlockBtn) {
+        unlockBtn.addEventListener('click', () => {
+            // Play background music at low volume
+            if (bgMusic) {
+                bgMusic.volume = 0.2;
+                bgMusic.play().catch(error => {
+                    console.warn("Audio playback was blocked by the browser:", error);
+                });
+            }
+            // Transition to actual dashboard
+            showView(dashboardView);
+        });
+    }
+
     function showView(viewToShow) {
         landingView.classList.remove('active');
         dashboardView.classList.remove('active');
+        if(unlockView) unlockView.classList.remove('active');
+        
         landingView.classList.add('hidden');
         dashboardView.classList.add('hidden');
+        if(unlockView) unlockView.classList.add('hidden');
 
         viewToShow.classList.remove('hidden');
         setTimeout(() => {
@@ -91,6 +116,11 @@ document.addEventListener('DOMContentLoaded', () => {
             resultsList.innerHTML = '<li><span class="event-name" style="color:#777">No results published yet.</span></li>';
         }
 
-        showView(dashboardView);
+        // Show the unlock screen first to force user interaction for audio playback
+        if (unlockView) {
+            showView(unlockView);
+        } else {
+            showView(dashboardView);
+        }
     }
 });
