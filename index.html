@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMSOFINE 9th Edition</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <h1>IMSOFINE <span class="edition">9th Edition</span></h1>
+            <p class="institution">Manshau Duathissunnah</p>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <!-- Default Landing View -->
+        <section id="landing-view" class="view active">
+            <div class="hero">
+                <h2>Welcome to the Fest</h2>
+                <p>Join us for an unforgettable experience organized by Event Core.</p>
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-number">300+</span>
+                        <span class="stat-label">Participants</span>
+                    </div>
+                </div>
+            </div>
+            <div class="info-section">
+                <p>Please scan your unique QR code to access your personalized dashboard.</p>
+            </div>
+        </section>
+
+        <!-- Student Dashboard View -->
+        <section id="dashboard-view" class="view hidden">
+            <div class="dashboard-header">
+                <h2>Student Dashboard</h2>
+                <h3 id="student-name">Loading...</h3>
+            </div>
+            
+            <div class="dashboard-grid">
+                <div class="card events-card">
+                    <h4>Your Events</h4>
+                    <ul id="events-list">
+                        <!-- Events will be populated here -->
+                    </ul>
+                </div>
+                
+                <div class="card results-card">
+                    <h4>Live Results / Rankings</h4>
+                    <ul id="results-list">
+                        <!-- Results will be populated here -->
+                    </ul>
+                </div>
+            </div>
+            <div class="action-buttons">
+                <button id="home-btn" class="btn">Back to Home</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Organized by Event Core | IMSOFINE</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
