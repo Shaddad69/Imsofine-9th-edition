@@ -384,3 +384,16 @@ footer {
     color: white;
     text-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
+
+.card-score {
+    background: linear-gradient(135deg, #f2994a, #f2c94c) !important;
+}
+.hub-card.card-score h3, .hub-card.card-score p {
+    color: #ffffff !important;
+}
+.hub-card.card-score .hub-icon {
+    background: none !important;
+    -webkit-text-fill-color: initial !important;
+    color: white;
+    text-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
