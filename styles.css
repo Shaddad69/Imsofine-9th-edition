@@ -316,3 +316,43 @@ footer {
     color: #666;
     line-height: 1.5;
 }
+
+/* Distinct Card Color Variations */
+.card-eval {
+    background: linear-gradient(135deg, #4a00e0, #8e2de2) !important;
+}
+.card-admin {
+    background: linear-gradient(135deg, #ff007f, #ff758c) !important;
+}
+.card-live {
+    background: linear-gradient(135deg, #11998e, #38ef7d) !important;
+}
+.card-green {
+    background: linear-gradient(135deg, #2b5876, #4e4376) !important;
+}
+
+/* Ensure text remains legible and contrasting on colored backgrounds */
+.hub-card.card-eval h3, .hub-card.card-eval p,
+.hub-card.card-admin h3, .hub-card.card-admin p,
+.hub-card.card-live h3, .hub-card.card-live p,
+.hub-card.card-green h3, .hub-card.card-green p {
+    color: #ffffff !important;
+}
+
+.hub-card.card-eval p,
+.hub-card.card-admin p,
+.hub-card.card-live p,
+.hub-card.card-green p {
+    opacity: 0.9;
+}
+
+/* Reset icon styling for solid colored backgrounds */
+.hub-card.card-eval .hub-icon,
+.hub-card.card-admin .hub-icon,
+.hub-card.card-live .hub-icon,
+.hub-card.card-green .hub-icon {
+    background: none !important;
+    -webkit-text-fill-color: initial !important;
+    color: white;
+    text-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
