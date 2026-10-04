@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Green Room - IMSOFINE 9th Edition</title>
+    <title>Judge Coordinator - IMSOFINE 9th Edition</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        @media (min-width: 992px) { .green-room-container .hub-grid { grid-template-columns: repeat(3, 1fr) !important; } }
-        .green-room-container {
+        .coordinator-container {
             max-width: 800px;
             margin: 4rem auto;
             padding: 3rem 2rem;
@@ -17,16 +16,16 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
             text-align: center;
         }
-        .green-room-icon {
+        .coordinator-icon {
             font-size: 5rem;
             margin-bottom: 1rem;
         }
-        .green-room-title {
+        .coordinator-title {
             color: var(--primary-color);
             margin-bottom: 1rem;
             font-size: 2.2rem;
         }
-        .green-room-description {
+        .coordinator-description {
             color: #666;
             margin-bottom: 2.5rem;
             font-size: 1.1rem;
@@ -56,35 +55,15 @@
     </header>
 
     <main id="main-content">
-        <div class="green-room-container">
-            <div class="green-room-icon">??</div>
-            <h2 class="green-room-title">Green Room</h2>
-            <p class="green-room-description">
-                Welcome to the backstage access area. Preparations, scheduling, and participant readiness will be managed here.
+        <div class="coordinator-container">
+            <div class="coordinator-icon">📨</div>
+            <h2 class="coordinator-title">Judge Coordinator</h2>
+            <p class="coordinator-description">
+                Communicate and coordinate directly with the judging panel.
+                <br><br>
+                <em>This feature is currently under construction.</em>
             </p>
-            
-            <div class="hub-grid" style="text-align: left; margin-bottom: 3rem; margin-top: 2rem;">
-                <!-- Commander Card -->
-                <a href="#" class="hub-card card-commander">
-                    <div class="hub-icon">???</div>
-                    <h3>Commander</h3>
-                    <p>Access commander tools and controls securely</p>
-                </a>
-                <!-- Score Updater Card -->
-                <a href="score-updater.html" class="hub-card card-score">
-                    <div class="hub-icon">??</div>
-                    <h3>Rank & Score Updater</h3>
-                    <p>Update participant ranks and scores</p>
-                </a>
-                <!-- Judge Coordinator Card -->
-                <a href="judge-coordinator.html" class="hub-card card-coordinator">
-                    <div class="hub-icon">??</div>
-                    <h3>Judge Coordinator</h3>
-                    <p>Communicate and coordinate with judges</p>
-                </a>
-            </div>
-
-            <a href="index.html" class="back-btn">? Back to Home</a>
+            <a href="green-room.html" class="back-btn">← Back to Green Room</a>
         </div>
     </main>
 
@@ -93,4 +72,3 @@
     </footer>
 </body>
 </html>
-

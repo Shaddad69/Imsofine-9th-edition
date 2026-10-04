@@ -401,3 +401,16 @@ footer {
 }
 
 
+
+.card-coordinator {
+    background: linear-gradient(135deg, #ff416c, #ff4b2b) !important;
+}
+.hub-card.card-coordinator h3, .hub-card.card-coordinator p {
+    color: #ffffff !important;
+}
+.hub-card.card-coordinator .hub-icon {
+    background: none !important;
+    -webkit-text-fill-color: initial !important;
+    color: white;
+    text-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
