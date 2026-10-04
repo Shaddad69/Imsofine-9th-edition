@@ -15,9 +15,9 @@
 
 body {
     font-family: 'Montserrat', sans-serif;
-    background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+    background: linear-gradient(135deg, #141e30 0%, #243b55 100%);
+    color: white;
     background-attachment: fixed;
-    color: var(--text-color);
     line-height: 1.6;
     display: flex;
     flex-direction: column;
@@ -399,4 +399,5 @@ footer {
     color: white;
     text-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
+
 
