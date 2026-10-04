@@ -1,4 +1,4 @@
-const excelUrl = 'IMSOFINE%20Student%20Data%20(1).xlsx';
+const excelUrl = 'IMSOFINE Student Data (1).xlsx';
 
 document.addEventListener('DOMContentLoaded', () => {
     const landingView = document.getElementById('landing-view');
@@ -59,7 +59,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function fetchStudentData(id) {
                 fetch(excelUrl)
-            .then(res => res.arrayBuffer())
+                .then(res => {
+                    if (!res.ok) throw new Error('Excel file not found on server (HTTP ' + res.status + ')');
+                    return res.arrayBuffer();
+                })
             .then(ab => {
                 const wb = XLSX.read(ab, { type: 'array' });
                 const ws = wb.Sheets[wb.SheetNames[0]];
@@ -137,4 +140,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+
 
