@@ -1,4 +1,4 @@
-const excelUrl = 'IMSOFINE Student Data (1).xlsx';
+const csvUrl = 'YOUR_GOOGLE_SHEETS_CSV_LINK_HERE';
 
 document.addEventListener('DOMContentLoaded', () => {
     const landingView = document.getElementById('landing-view');
@@ -140,5 +140,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+
+
+
+
 
 

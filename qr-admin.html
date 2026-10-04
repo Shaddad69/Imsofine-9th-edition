@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bulk QR Code Generator - Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         body {
@@ -102,7 +102,7 @@
     </div>
 
     <script>
-        const excelUrl = 'IMSOFINE Student Data (1).xlsx';
+        const csvUrl = 'YOUR_GOOGLE_SHEETS_CSV_LINK_HERE';
         
         // Fallback mock CSV data for testing until the real URL is provided
         const mockCsvData = `Student_ID,Name,Event_1,Event_2,Event_3,Event_4,Rank_or_Result
@@ -171,6 +171,7 @@
     </script>
 </body>
 </html>
+
 
 
 

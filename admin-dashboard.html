@@ -6,7 +6,7 @@
     <title>Admin Dashboard - IMSOFINE 9th Edition</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <style>
         .admin-container {
             max-width: 1200px;
@@ -173,7 +173,7 @@
 
     <script>
         // Shared Google Sheets CSV link
-        const excelUrl = 'IMSOFINE Student Data (1).xlsx';
+        const csvUrl = 'YOUR_GOOGLE_SHEETS_CSV_LINK_HERE';
         
         let studentsData = [];
 
@@ -185,24 +185,26 @@
             document.getElementById('team-filter').addEventListener('change', renderTable);
         });
 
-                function fetchData() {
-            fetch(excelUrl)
-                .then(res => {
-                    if (!res.ok) throw new Error('Excel file not found on server (HTTP ' + res.status + ')');
-                    return res.arrayBuffer();
-                })
-                .then(ab => {
-                    const wb = XLSX.read(ab, { type: 'array' });
-                    const ws = wb.Sheets[wb.SheetNames[0]];
-                    const data = XLSX.utils.sheet_to_json(ws);
+                        function fetchData() {
+            if (csvUrl === 'YOUR_GOOGLE_SHEETS_CSV_LINK_HERE') {
+                document.getElementById('table-body').innerHTML = '<tr><td colspan="5" style="text-align:center;color:#666;padding: 3rem;">Please provide a valid Google Sheets CSV link in the code to load data.</td></tr>';
+                return;
+            }
+
+            Papa.parse(csvUrl, {
+                download: true,
+                header: true,
+                complete: function(results) {
+                    const data = results.data;
                     studentsData = data.filter(row => row.Student_ID && String(row.Student_ID).trim() !== '');
                     populateTeamFilter();
                     renderTable();
-                })
-                .catch(err => {
+                },
+                error: function(err) {
                     console.error(err);
-                    document.getElementById('table-body').innerHTML = '<tr><td colspan="5" style="text-align:center;color:red;padding: 3rem;">Failed to load data from the Excel file.</td></tr>';
-                });
+                    document.getElementById('table-body').innerHTML = '<tr><td colspan="5" style="text-align:center;color:red;padding: 3rem;">Failed to load Google Sheet data. Please check the URL.</td></tr>';
+                }
+            });
         }
 
         function populateTeamFilter() {
@@ -291,6 +293,7 @@
     </script>
 </body>
 </html>
+
 
 
 
