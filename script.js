@@ -1,4 +1,4 @@
-const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTKx4D_HEzMWIJORH9R2rnTcSiIMDPgXijvliOc_12wJSM5vPAu-zC-sZK-MOrRcRIbYQhfu_NaNp1M/pub?gid=0&single=true&output=csv';
+const excelUrl = 'IMSOFINE%20Student%20Data%20(1).xlsx';
 
 document.addEventListener('DOMContentLoaded', () => {
     const landingView = document.getElementById('landing-view');
@@ -58,15 +58,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function fetchStudentData(id) {
-        Papa.parse(csvUrl, {
-            download: true,
-            header: true,
-            complete: function(results) {
-                const data = results.data;
+                fetch(excelUrl)
+            .then(res => res.arrayBuffer())
+            .then(ab => {
+                const wb = XLSX.read(ab, { type: 'array' });
+                const ws = wb.Sheets[wb.SheetNames[0]];
+                const data = XLSX.utils.sheet_to_json(ws);
                 const student = data.find(row => String(row.Student_ID) === String(id));
                 
                 if(student) {
                     loadDashboard(student);
+                } else {
+                    alert("Student ID not found in database. Redirecting to home page.");
+                    const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+                    window.history.pushState({path:newUrl}, '', newUrl);
+                    showView(landingView);
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Failed to load data. Please ensure the Excel file is correctly uploaded.");
+                showView(landingView);
+            });
                 } else {
                     alert("Student ID not found in database. Redirecting to home page.");
                     const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
@@ -124,3 +137,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+

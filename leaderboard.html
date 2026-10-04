@@ -6,7 +6,7 @@
     <title>Leaderboard - IMSOFINE 9th Edition</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         .leaderboard-container {
             max-width: 800px;
@@ -116,7 +116,7 @@
     </footer>
 
     <script>
-        const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTKx4D_HEzMWIJORH9R2rnTcSiIMDPgXijvliOc_12wJSM5vPAu-zC-sZK-MOrRcRIbYQhfu_NaNp1M/pub?gid=0&single=true&output=csv';
+        const excelUrl = 'IMSOFINE%20Student%20Data%20(1).xlsx';
         
         document.addEventListener('DOMContentLoaded', () => {
             Papa.parse(csvUrl, {
@@ -183,3 +183,4 @@
     </script>
 </body>
 </html>
+
