@@ -260,6 +260,13 @@ footer {
     .hub-grid {
         grid-template-columns: 1fr 1fr;
     }
+    /* Center the 3rd card on desktop */
+    .hub-grid > .hub-card:last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+        width: calc(50% - 0.75rem); max-width: none;
+        justify-self: center;
+        width: 100%;
+    }
 }
 
 .hub-card {
@@ -356,3 +363,5 @@ footer {
     color: white;
     text-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
+
+
