@@ -372,3 +372,15 @@ footer {
     text-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
+.card-commander {
+    background: linear-gradient(135deg, #1e3c72, #2a5298) !important;
+}
+.hub-card.card-commander h3, .hub-card.card-commander p {
+    color: #ffffff !important;
+}
+.hub-card.card-commander .hub-icon {
+    background: none !important;
+    -webkit-text-fill-color: initial !important;
+    color: white;
+    text-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
