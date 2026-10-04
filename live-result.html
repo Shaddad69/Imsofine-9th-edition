@@ -6,7 +6,7 @@
     <title>Leaderboard - IMSOFINE 9th Edition</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>`n    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <style>
         .leaderboard-container {
             max-width: 800px;
@@ -99,7 +99,10 @@
     <div class="leaderboard-container">
         <div class="leaderboard-header">
             <h2>Top Participants</h2>
+            <button id="start-scan-btn" class="btn" style="background: var(--accent-color); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 20px; font-weight: bold; cursor: pointer; margin-top: 1rem; box-shadow: 0 4px 10px rgba(255, 0, 127, 0.3);">?? Scan Your QR Code</button>
         </div>
+        
+        <div id="reader" style="width: 100%; max-width: 500px; margin: 0 auto; display: none; margin-bottom: 2rem; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1);"></div>
 
         <div id="leaderboard-list">
             <div style="text-align:center; padding: 3rem;">Loading rankings...</div>
@@ -118,19 +121,63 @@
     <script>
         const excelUrl = 'IMSOFINE Student Data (1).xlsx';
         
-        document.addEventListener('DOMContentLoaded', () => {
-            Papa.parse(csvUrl, {
-                download: true,
-                header: true,
-                complete: function(results) {
-                    const data = results.data.filter(row => row.Student_ID && row.Student_ID.trim() !== ''); 
-                    renderLeaderboard(data);
-                },
-                error: function(err) {
+                document.addEventListener('DOMContentLoaded', () => {
+            fetch(excelUrl)
+                .then(res => {
+                    if(!res.ok) throw new Error("HTTP " + res.status);
+                    return res.arrayBuffer();
+                })
+                .then(ab => {
+                    const wb = XLSX.read(ab, { type: 'array' });
+                    const ws = wb.Sheets[wb.SheetNames[0]];
+                    const data = XLSX.utils.sheet_to_json(ws);
+                    const validData = data.filter(row => row.Student_ID && String(row.Student_ID).trim() !== '');
+                    renderLeaderboard(validData);
+                })
+                .catch(err => {
                     console.error(err);
-                    document.getElementById('leaderboard-list').innerHTML = '<div style="text-align:center;color:red;padding: 3rem;">Failed to load data. Please check your network connection and ensure the Google Sheet is public.</div>';
+                    document.getElementById('leaderboard-list').innerHTML = '<div style="text-align:center;color:red;padding: 3rem;">Failed to load Excel data. Ensure the file is correctly placed in the repository.</div>';
+                });
+        });
+
+        // QR Code Scanner Logic
+        const scanBtn = document.getElementById('start-scan-btn');
+        let html5QrCode = null;
+
+        scanBtn.addEventListener('click', () => {
+            const readerDiv = document.getElementById('reader');
+            if (readerDiv.style.display === 'none') {
+                readerDiv.style.display = 'block';
+                scanBtn.textContent = "Close Scanner";
+                
+                if (!html5QrCode) {
+                    html5QrCode = new Html5Qrcode("reader");
                 }
-            });
+                
+                html5QrCode.start(
+                    { facingMode: "environment" }, 
+                    { fps: 10, qrbox: {width: 250, height: 250} },
+                    (decodedText, decodedResult) => {
+                        // Redirect student to their personalized dashboard link
+                        html5QrCode.stop().then(ignore => {
+                            window.location.href = decodedText;
+                        });
+                    },
+                    (errorMessage) => {
+                        // ignore background parsing errors
+                    })
+                .catch((err) => {
+                    console.error("Camera access error:", err);
+                    alert("Could not access camera. Please ensure you have granted camera permissions.");
+                });
+            } else {
+                readerDiv.style.display = 'none';
+                scanBtn.textContent = "?? Scan Your QR Code";
+                if(html5QrCode) {
+                    html5QrCode.stop().catch(err => console.error(err));
+                }
+            }
+        });
         });
 
         function renderLeaderboard(data) {
@@ -183,5 +230,7 @@
     </script>
 </body>
 </html>
+
+
 
 
