@@ -150,22 +150,39 @@
         <p>&copy; 2026 Organized by Event Core | IMSOFINE</p>
     </footer>
 
-    <script>
+        <script>
         const excelUrl = 'IMSOFINE Student Data (1).xlsx';
         
         document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const studentId = urlParams.get('id');
 
-            if (!studentId) {
-                document.getElementById('dashboard-content').innerHTML = `
-                    <div style="text-align:center; padding: 2rem;">
-                        <h2 style="color:var(--primary-color);">Welcome!</h2>
-                        <p style="color:#666; margin-top:1rem; line-height: 1.6;">Please scan a QR code using the button below to view personalized results and registered programs.</p>
-                    </div>
-                `;
-                return;
+            if (studentId) {
+                loadStudentData(studentId);
+            } else {
+                showWelcome();
             }
+        });
+
+        function showWelcome() {
+            document.getElementById('dashboard-content').innerHTML = 
+                <div style="text-align:center; padding: 2rem;">
+                    <h2 style="color:var(--primary-color);">Welcome!</h2>
+                    <p style="color:#666; margin-top:1rem; line-height: 1.6;">Please scan a QR code using the button below to view personalized results and registered programs.</p>
+                </div>
+            ;
+        }
+
+        function loadStudentData(studentId) {
+            document.getElementById('dashboard-content').innerHTML = 
+                <div style="text-align:center; padding: 3rem;">
+                    <div class="spinner"></div>
+                    <div style="color: #666; font-weight: 600;">Loading your personalized dashboard...</div>
+                </div>
+            ;
+
+            // Update URL without reloading
+            history.pushState(null, '', '?id=' + studentId);
 
             // Fetch Student Data
             fetch(excelUrl)
@@ -182,19 +199,19 @@
                     if (student) {
                         renderStudentDashboard(student);
                     } else {
-                        document.getElementById('dashboard-content').innerHTML = `
+                        document.getElementById('dashboard-content').innerHTML = 
                             <div style="text-align:center; padding: 3rem; color:red;">
                                 <h3>Student Not Found</h3>
-                                <p>No records found for ID: ${studentId}</p>
+                                <p>No records found for ID:  + studentId + </p>
                             </div>
-                        `;
+                        ;
                     }
                 })
                 .catch(err => {
                     console.error(err);
                     document.getElementById('dashboard-content').innerHTML = '<div style="text-align:center;color:red;padding: 3rem;">Failed to load Excel data. Ensure the file is correctly placed in the repository.</div>';
                 });
-        });
+        }
 
         function renderStudentDashboard(student) {
             const container = document.getElementById('dashboard-content');
@@ -216,30 +233,30 @@
                 programsHtml = '<ul class="program-list">';
                 programs.forEach(prog => {
                     // Display the general result next to each program, or "Pending" if blank
-                    const resHtml = resultText ? `<span class="program-result">${resultText}</span>` : `<span class="no-result">Pending</span>`;
-                    programsHtml += `
+                    const resHtml = resultText ? <span class="program-result"> + resultText + </span> : <span class="no-result">Pending</span>;
+                    programsHtml += 
                         <li class="program-item">
-                            <span class="program-name">${prog}</span>
-                            ${resHtml}
+                            <span class="program-name"> + prog + </span>
+                             + resHtml + 
                         </li>
-                    `;
+                    ;
                 });
                 programsHtml += '</ul>';
             } else {
                 programsHtml = '<p style="color:#888; text-align:center; font-style:italic;">No events registered.</p>';
             }
 
-            container.innerHTML = `
+            container.innerHTML = 
                 <div class="dashboard-header">
-                    <h2 class="student-name">${student.Name || 'Unknown Student'}</h2>
-                    <div class="student-team">${student.Team_Name ? 'Team: ' + student.Team_Name : 'Individual Participant'}</div>
-                    <div style="margin-top: 0.5rem; color: var(--accent-color); font-weight: bold;">ID: #${student.Student_ID}</div>
+                    <h2 class="student-name"> + (student.Name || 'Unknown Student') + </h2>
+                    <div class="student-team"> + (student.Team_Name ? 'Team: ' + student.Team_Name : 'Individual Participant') + </div>
+                    <div style="margin-top: 0.5rem; color: var(--accent-color); font-weight: bold;">ID: # + student.Student_ID + </div>
                 </div>
                 <div>
                     <h3 style="margin-bottom: 1rem; color: var(--text-color);">Your Registered Programs</h3>
-                    ${programsHtml}
+                     + programsHtml + 
                 </div>
-            `;
+            ;
         }
 
         // QR Code Scanner Logic via Native Camera Input
@@ -250,28 +267,37 @@
             const imageFile = e.target.files[0];
             const html5QrCode = new Html5Qrcode("reader");
             
+            document.getElementById('dashboard-content').innerHTML = 
+                <div style="text-align:center; padding: 3rem;">
+                    <div class="spinner"></div>
+                    <div style="color: #666; font-weight: 600;">Scanning QR Code...</div>
+                </div>
+            ;
+
             html5QrCode.scanFile(imageFile, true)
             .then(decodedText => {
-                // Check if the QR code output is a full URL or just an ID
+                let parsedId = null;
                 if(decodedText.includes('http')) {
-                    // Instead of going to index.html dashboard, let's strictly load it in THIS live-result dashboard
                     const url = new URL(decodedText);
-                    const id = url.searchParams.get('id');
-                    if(id) {
-                        window.location.href = 'live-result.html?id=' + id;
-                    } else {
-                        window.location.href = decodedText;
-                    }
+                    parsedId = url.searchParams.get('id');
                 } else {
-                    window.location.href = 'live-result.html?id=' + decodedText;
+                    parsedId = decodedText;
+                }
+                
+                if(parsedId) {
+                    loadStudentData(parsedId);
+                } else {
+                    throw new Error("Invalid QR Code format.");
                 }
             })
             .catch(err => {
                 console.error(err);
-                alert("No QR code found in the image. Please try again.");
+                alert("No valid ID found in the QR code. Please try again.");
+                showWelcome();
                 cameraInput.value = ""; // Reset input
             });
         });
     </script>
 </body>
 </html>
+
