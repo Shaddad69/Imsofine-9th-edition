@@ -3,75 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leaderboard - IMSOFINE 9th Edition</title>
+    <title>Student Dashboard - IMSOFINE 9th Edition</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>`n    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <style>
-        .leaderboard-container {
+        .dashboard-container {
             max-width: 800px;
             margin: 0 auto;
             padding: 2rem 1rem;
             width: 100%;
             flex: 1;
         }
-        .leaderboard-header {
-            text-align: center;
+        .dashboard-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             margin-bottom: 2rem;
         }
-        .leaderboard-header h2 {
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-        }
-        .rank-card {
-            background: var(--card-bg);
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            border-left: 5px solid transparent;
-        }
-        .rank-number {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--accent-color);
-            min-width: 60px;
+        .dashboard-header {
             text-align: center;
-        }
-        .rank-1 {
-            border-left-color: #FFD700;
-            background: linear-gradient(to right, #fffdf0, #ffffff);
-        }
-        .rank-2 {
-            border-left-color: #C0C0C0;
-            background: linear-gradient(to right, #f8f8f8, #ffffff);
-        }
-        .rank-3 {
-            border-left-color: #CD7F32;
-            background: linear-gradient(to right, #fffaf0, #ffffff);
-        }
-        .student-details {
-            flex: 1;
-            padding-left: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 1.5rem;
         }
         .student-name {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--text-color);
-            margin-bottom: 0.2rem;
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
         }
-        .team-name {
-            font-size: 0.9rem;
+        .student-team {
+            font-size: 1.1rem;
             color: #666;
         }
-        .score-pill {
-            background: var(--primary-color);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
+        .program-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .program-item {
+            background: #f8f9fa;
+            border-left: 4px solid var(--accent-color);
+            padding: 1rem 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 0 8px 8px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .program-name {
             font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--text-color);
+        }
+        .program-result {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(17, 153, 142, 0.2);
+        }
+        .no-result {
+            background: #eee;
+            color: #888;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            box-shadow: none;
+        }
+        
+        .scan-section {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px dashed #ddd;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border-left-color: var(--primary-color);
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         .nav-links {
             margin-top: 2rem;
@@ -86,80 +110,39 @@
         .nav-links a:hover {
             text-decoration: underline;
         }
-            .leaderboard-card {
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            margin-bottom: 2rem;
-        }
-        .scan-btn {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            cursor: pointer;
-            margin-top: 1rem;
-            box-shadow: 0 8px 20px rgba(74, 0, 224, 0.25);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .scan-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 25px rgba(74, 0, 224, 0.35);
-        }
-        .spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border-left-color: var(--primary-color);
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem auto;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
     </style>
 </head>
 <body>
     <header>
         <div class="logo-container">
             <h1>IMSOFINE <span class="edition">9th Edition</span></h1>
-            <p class="institution">Live Leaderboard</p>
+            <p class="institution">Participant Dashboard</p>
         </div>
     </header>
 
-    <div class="leaderboard-container">
-                <div class="leaderboard-card">
-            <div class="leaderboard-header">
-                <h2>Top Participants</h2>
-                <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display: none;">
-                <button onclick="document.getElementById('cameraInput').click();" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 12px 28px; border-radius: 50px; font-size: 16px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(118, 75, 162, 0.4); margin-top: 1rem;">
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M3 3h8v8H3zm2 2v4h4V5zm8-2h8v8h-8zm2 2v4h4V5zM3 13h8v8H3zm2 2v4h4v-4zm13-2h3v2h-3zm-3 0h2v2h-2zm3 3h2v2h-2zm-2 2h3v2h-3zm-3-3h2v2h-2zm3 3h2v2h-2zm-3-3h2v2h-2z"/></svg>
-                    Scan Your QR Code
-                </button>
+    <div class="dashboard-container">
+        
+        <!-- Dashboard Display Area -->
+        <div class="dashboard-card" id="dashboard-content">
+            <div style="text-align:center; padding: 3rem;">
+                <div class="spinner"></div>
+                <div style="color: #666; font-weight: 600;">Loading your personalized dashboard...</div>
             </div>
-            
-            <div id="reader" style="width: 100%; max-width: 500px; margin: 0 auto; display: none; margin-bottom: 2rem; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1);"></div>
+        </div>
 
-            <div id="leaderboard-list">
-                <div style="text-align:center; padding: 3rem;">
-                    <div class="spinner"></div>
-                    <div style="color: #666; font-weight: 600;">Loading rankings...</div>
-                </div>
-            </div>
+        <!-- Scanner Section moved to bottom -->
+        <div class="scan-section">
+            <h3 style="color: var(--text-color); margin-bottom: 1rem;">Scan Another Participant</h3>
+            <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display: none;">
+            <button onclick="document.getElementById('cameraInput').click();" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 12px 28px; border-radius: 50px; font-size: 16px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(118, 75, 162, 0.4);">
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M3 3h8v8H3zm2 2v4h4V5zm8-2h8v8h-8zm2 2v4h4V5zM3 13h8v8H3zm2 2v4h4v-4zm13-2h3v2h-3zm-3 0h2v2h-2zm3 3h2v2h-2zm-2 2h3v2h-3zm-3-3h2v2h-2zm3 3h2v2h-2zm-3-3h2v2h-2z"/></svg>
+                Scan QR Code
+            </button>
+            <div id="reader" style="width: 100%; max-width: 500px; margin: 0 auto; display: none;"></div>
         </div>
         
         <div class="nav-links">
-            <a href="index.html">← Back to Home</a>
-            <a href="admin-dashboard.html">Admin Dashboard</a>
+            <a href="index.html">← Back to Hub</a>
         </div>
     </div>
 
@@ -170,7 +153,21 @@
     <script>
         const excelUrl = 'IMSOFINE Student Data (1).xlsx';
         
-                document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const studentId = urlParams.get('id');
+
+            if (!studentId) {
+                document.getElementById('dashboard-content').innerHTML = `
+                    <div style="text-align:center; padding: 2rem;">
+                        <h2 style="color:var(--primary-color);">Welcome!</h2>
+                        <p style="color:#666; margin-top:1rem; line-height: 1.6;">Please scan a QR code using the button below to view personalized results and registered programs.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Fetch Student Data
             fetch(excelUrl)
                 .then(res => {
                     if(!res.ok) throw new Error("HTTP " + res.status);
@@ -180,18 +177,73 @@
                     const wb = XLSX.read(ab, { type: 'array' });
                     const ws = wb.Sheets[wb.SheetNames[0]];
                     const data = XLSX.utils.sheet_to_json(ws);
-                    const validData = data.filter(row => row.Student_ID && String(row.Student_ID).trim() !== '');
-                    renderLeaderboard(validData);
+                    
+                    const student = data.find(row => String(row.Student_ID) === String(studentId));
+                    if (student) {
+                        renderStudentDashboard(student);
+                    } else {
+                        document.getElementById('dashboard-content').innerHTML = `
+                            <div style="text-align:center; padding: 3rem; color:red;">
+                                <h3>Student Not Found</h3>
+                                <p>No records found for ID: ${studentId}</p>
+                            </div>
+                        `;
+                    }
                 })
                 .catch(err => {
                     console.error(err);
-                    document.getElementById('leaderboard-list').innerHTML = '<div style="text-align:center;color:red;padding: 3rem;">Failed to load Excel data. Ensure the file is correctly placed in the repository.</div>';
+                    document.getElementById('dashboard-content').innerHTML = '<div style="text-align:center;color:red;padding: 3rem;">Failed to load Excel data. Ensure the file is correctly placed in the repository.</div>';
                 });
         });
 
-                // QR Code Scanner Logic via Native Camera Input
+        function renderStudentDashboard(student) {
+            const container = document.getElementById('dashboard-content');
+            
+            // Extract programs (events)
+            const eventKeys = ['Event_1', 'Event_2', 'Event_3', 'Event_4'];
+            const programs = [];
+            eventKeys.forEach(key => {
+                if (student[key] && student[key].trim() !== '') {
+                    programs.push(student[key].trim());
+                }
+            });
+
+            // Extract result
+            const resultText = (student.Rank_or_Result && student.Rank_or_Result.trim() !== '') ? student.Rank_or_Result.trim() : null;
+
+            let programsHtml = '';
+            if (programs.length > 0) {
+                programsHtml = '<ul class="program-list">';
+                programs.forEach(prog => {
+                    // Display the general result next to each program, or "Pending" if blank
+                    const resHtml = resultText ? `<span class="program-result">${resultText}</span>` : `<span class="no-result">Pending</span>`;
+                    programsHtml += `
+                        <li class="program-item">
+                            <span class="program-name">${prog}</span>
+                            ${resHtml}
+                        </li>
+                    `;
+                });
+                programsHtml += '</ul>';
+            } else {
+                programsHtml = '<p style="color:#888; text-align:center; font-style:italic;">No events registered.</p>';
+            }
+
+            container.innerHTML = `
+                <div class="dashboard-header">
+                    <h2 class="student-name">${student.Name || 'Unknown Student'}</h2>
+                    <div class="student-team">${student.Team_Name ? 'Team: ' + student.Team_Name : 'Individual Participant'}</div>
+                    <div style="margin-top: 0.5rem; color: var(--accent-color); font-weight: bold;">ID: #${student.Student_ID}</div>
+                </div>
+                <div>
+                    <h3 style="margin-bottom: 1rem; color: var(--text-color);">Your Registered Programs</h3>
+                    ${programsHtml}
+                </div>
+            `;
+        }
+
+        // QR Code Scanner Logic via Native Camera Input
         const cameraInput = document.getElementById('cameraInput');
-        
         cameraInput.addEventListener('change', (e) => {
             if (e.target.files.length == 0) return;
             
@@ -200,85 +252,26 @@
             
             html5QrCode.scanFile(imageFile, true)
             .then(decodedText => {
-                window.location.href = decodedText;
+                // Check if the QR code output is a full URL or just an ID
+                if(decodedText.includes('http')) {
+                    // Instead of going to index.html dashboard, let's strictly load it in THIS live-result dashboard
+                    const url = new URL(decodedText);
+                    const id = url.searchParams.get('id');
+                    if(id) {
+                        window.location.href = 'live-result.html?id=' + id;
+                    } else {
+                        window.location.href = decodedText;
+                    }
+                } else {
+                    window.location.href = 'live-result.html?id=' + decodedText;
+                }
             })
             .catch(err => {
                 console.error(err);
                 alert("No QR code found in the image. Please try again.");
-                cameraInput.value = ""; // Reset input so user can scan again
+                cameraInput.value = ""; // Reset input
             });
         });
-                    },
-                    (errorMessage) => {
-                        // ignore background parsing errors
-                    })
-                .catch((err) => {
-                    console.error("Camera access error:", err);
-                    alert("Could not access camera. Please ensure you have granted camera permissions.");
-                });
-            } else {
-                readerDiv.style.display = 'none';
-                scanBtn.textContent = "?? Scan Your QR Code";
-                if(html5QrCode) {
-                    html5QrCode.stop().catch(err => console.error(err));
-                }
-            }
-        });
-        });
-
-        function renderLeaderboard(data) {
-            const container = document.getElementById('leaderboard-list');
-            container.innerHTML = '';
-
-            // Calculate points based on Rank_or_Result column
-            // Assigning hypothetical points: 1st (10), 2nd (7), 3rd (5) for demonstration
-            data.forEach(student => {
-                let score = 0;
-                const result = (student.Rank_or_Result || '').toLowerCase();
-                
-                if (result.includes('1st') || result.includes('first')) score += 10;
-                else if (result.includes('2nd') || result.includes('second')) score += 7;
-                else if (result.includes('3rd') || result.includes('third')) score += 5;
-                else if (result !== '') score += 1; // 1 point for any other listed result
-                
-                student.score = score;
-            });
-
-            // Filter to students with points and sort descending
-            const rankedData = data.filter(s => s.score > 0).sort((a, b) => b.score - a.score);
-
-            if (rankedData.length === 0) {
-                container.innerHTML = '<div style="text-align:center; padding: 3rem; color: #666;">No ranked results published yet.</div>';
-                return;
-            }
-
-            rankedData.forEach((student, index) => {
-                const rank = index + 1;
-                const card = document.createElement('div');
-                card.className = `rank-card rank-${rank}`;
-
-                let rankIcon = `#${rank}`;
-                if(rank === 1) rankIcon = "??";
-                if(rank === 2) rankIcon = "??";
-                if(rank === 3) rankIcon = "??";
-
-                card.innerHTML = `
-                    <div class="rank-number">${rankIcon}</div>
-                    <div class="student-details">
-                        <div class="student-name">${student.Name || 'Unknown'}</div>
-                        <div class="team-name">${student.Team_Name || 'No Team'}</div>
-                    </div>
-                    <div class="score-pill">${student.score} pts</div>
-                `;
-                container.appendChild(card);
-            });
-        }
     </script>
 </body>
 </html>
-
-
-
-
-
-
