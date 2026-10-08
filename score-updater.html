@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -31,19 +31,51 @@
             font-size: 1.1rem;
             line-height: 1.6;
         }
-        .back-btn {
-            display: inline-block;
+        
+        /* New Styles for Options */
+        .updater-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            max-width: 450px;
+            margin: 0 auto 3rem auto;
+        }
+        .updater-option-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
+            padding: 1.2rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(74, 0, 224, 0.2);
+            transition: all 0.3s ease;
+        }
+        .updater-option-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 25px rgba(74, 0, 224, 0.35);
+        }
+        .option-icon {
+            font-size: 1.6rem;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            background: #eee;
+            color: #333;
             padding: 1rem 2.5rem;
             border-radius: 30px;
             text-decoration: none;
             font-weight: 600;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: background 0.3s ease, transform 0.3s ease;
         }
         .back-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(74, 0, 224, 0.3);
+            background: #e0e0e0;
+            transform: translateY(-2px);
         }
     </style>
 </head>
@@ -60,9 +92,21 @@
             <h2 class="updater-title">Rank & Score Updater</h2>
             <p class="updater-description">
                 Update participant ranks and scores directly.
-                <br><br>
-                <em>This feature is currently under construction.</em>
             </p>
+            
+            <!-- Added Options -->
+            <div class="updater-options">
+                <a href="#" class="updater-option-btn">
+                    <span class="option-icon">👤</span>
+                    Participant Rank & Score
+                </a>
+                <a href="#" class="updater-option-btn">
+                    <span class="option-icon">👥</span>
+                    Team Rank
+                </a>
+            </div>
+
+            <!-- Note: Modified the back button to be more subtle (gray) so the purple gradient buttons pop -->
             <a href="green-room.html" class="back-btn">← Back to Green Room</a>
         </div>
     </main>
