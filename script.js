@@ -1,6 +1,33 @@
 const csvUrl = 'YOUR_GOOGLE_SHEETS_CSV_LINK_HERE';
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Access Code Overlay Logic
+    const accessOverlay = document.getElementById('access-overlay');
+    const websiteContent = document.getElementById('website-content');
+    const accessBtn = document.getElementById('access-btn');
+    const accessInput = document.getElementById('access-input');
+    const accessErrorMsg = document.getElementById('access-error-msg');
+
+    if (accessOverlay && accessBtn && accessInput && websiteContent) {
+        accessBtn.addEventListener('click', () => {
+            if (accessInput.value === 'Shaddad') {
+                accessOverlay.classList.add('hidden-overlay');
+                websiteContent.style.display = 'flex';
+                setTimeout(() => {
+                    accessOverlay.style.display = 'none';
+                }, 500);
+            } else {
+                accessErrorMsg.style.display = 'block';
+            }
+        });
+        
+        accessInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                accessBtn.click();
+            }
+        });
+    }
+
     const landingView = document.getElementById('landing-view');
     const dashboardView = document.getElementById('dashboard-view');
     const unlockView = document.getElementById('unlock-view');
