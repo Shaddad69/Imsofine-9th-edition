@@ -85,12 +85,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function fetchStudentData(id) {
-                fetch(excelUrl)
-                .then(res => {
-                    if (!res.ok) throw new Error('Excel file not found on server (HTTP ' + res.status + ')');
-                    return res.arrayBuffer();
-                })
+        const excelUrl = 'IMSOFINE Student Data (1).xlsx';
+        fetch(excelUrl)
+            .then(res => {
+                if (!res.ok) throw new Error('Excel file not found on server (HTTP ' + res.status + ')');
+                return res.arrayBuffer();
+            })
             .then(ab => {
+                if (typeof XLSX === 'undefined') {
+                    console.warn('XLSX library not loaded');
+                    return;
+                }
                 const wb = XLSX.read(ab, { type: 'array' });
                 const ws = wb.Sheets[wb.SheetNames[0]];
                 const data = XLSX.utils.sheet_to_json(ws);
@@ -110,19 +115,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert("Failed to load data. Please ensure the Excel file is correctly uploaded.");
                 showView(landingView);
             });
-                } else {
-                    alert("Student ID not found in database. Redirecting to home page.");
-                    const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-                    window.history.pushState({path:newUrl}, '', newUrl);
-                    showView(landingView);
-                }
-            },
-            error: function(err) {
-                console.error(err);
-                alert("Failed to load data. Please check your network connection and ensure the Google Sheet is public.");
-                showView(landingView);
-            }
-        });
     }
 
     function loadDashboard(student) {

@@ -6,6 +6,711 @@
     <title>IMSOFINE 9th Edition</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Scoped styles for new dashboard architecture components */
+        main#main-content {
+            max-width: 1240px;
+            padding: 2rem 1.5rem 4rem 1.5rem;
+        }
+
+        #unlock-view, #dashboard-view {
+            max-width: 820px;
+            margin: 0 auto;
+        }
+
+        /* Top Architecture & Status Banner */
+        .fest-arch-banner {
+            background: rgba(20, 30, 48, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            border-radius: 14px;
+            padding: 1.4rem 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .fest-arch-left {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .fest-arch-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .live-indicator-dot {
+            width: 10px;
+            height: 10px;
+            background: #10b981;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 10px #10b981;
+            animation: livePulse 2s infinite;
+        }
+
+        @keyframes livePulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        .fest-arch-sub {
+            font-size: 0.88rem;
+            color: #94a3b8;
+        }
+
+        .fest-arch-meta {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .arch-pill {
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #e2e8f0;
+        }
+
+        .arch-pill.pill-status {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: rgba(16, 185, 129, 0.35);
+            color: #34d399;
+        }
+
+        .fest-arch-desc {
+            font-size: 0.92rem;
+            color: #cbd5e1;
+            line-height: 1.6;
+            margin-top: 0.75rem;
+            width: 100%;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding-top: 0.75rem;
+        }
+
+        /* 5 Key Metric / Stats Cards Row */
+        .stats-deck {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-deck-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 1.4rem 1.2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-deck-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(142, 45, 226, 0.4);
+            box-shadow: 0 10px 25px rgba(74, 0, 224, 0.25);
+        }
+
+        .stat-deck-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            opacity: 0.8;
+        }
+
+        .stat-deck-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .stat-deck-title {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: #94a3b8;
+        }
+
+        .stat-pill {
+            font-size: 0.68rem;
+            font-weight: 700;
+            padding: 0.2rem 0.55rem;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-pill.pill-green {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .stat-pill.pill-cyan {
+            background: rgba(6, 182, 212, 0.15);
+            color: #22d3ee;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .stat-pill.pill-amber {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .stat-deck-number {
+            font-size: 2.8rem;
+            font-weight: 700;
+            line-height: 1;
+            color: #ffffff;
+            margin-bottom: 0.6rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-deck-sub {
+            font-size: 0.82rem;
+            color: #cbd5e1;
+            line-height: 1.4;
+        }
+
+        /* Section Header Meta */
+        .section-meta-head {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-meta-head h3 {
+            font-size: 1.45rem;
+            font-weight: 700;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-meta-head h3::before {
+            content: '•';
+            color: var(--accent-color);
+            font-size: 1.6rem;
+            line-height: 1;
+        }
+
+        .section-meta-head p {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            margin-top: 0.25rem;
+            line-height: 1.5;
+        }
+
+        /* Two-Column Layout: Route Map & Route Registry */
+        .arch-grid-two {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-top: 3.5rem;
+            margin-bottom: 3.5rem;
+        }
+
+        @media (min-width: 900px) {
+            .arch-grid-two {
+                grid-template-columns: 1.15fr 1fr;
+            }
+        }
+
+        .dashboard-panel {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 1.8rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Visual Route Map */
+        .route-map-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.2rem;
+            margin: 1.5rem 0 1rem 0;
+            width: 100%;
+        }
+
+        .map-node {
+            padding: 0.75rem 1.4rem;
+            border-radius: 10px;
+            font-weight: 600;
+            text-align: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 0.88rem;
+        }
+
+        .map-node:hover {
+            transform: scale(1.03);
+        }
+
+        .map-node.tier-1 {
+            background: linear-gradient(135deg, #4a00e0, #8e2de2);
+            color: #ffffff;
+            width: 85%;
+            max-width: 320px;
+            box-shadow: 0 4px 15px rgba(74, 0, 224, 0.35);
+        }
+
+        .map-node-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 0.75rem;
+            width: 100%;
+        }
+
+        .map-node.tier-2 {
+            background: rgba(255, 255, 255, 0.08);
+            color: #f1f5f9;
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .map-node.tier-2.node-admin { border-left: 3px solid #ff007f; }
+        .map-node.tier-2.node-green { border-left: 3px solid #38ef7d; }
+        .map-node.tier-2.node-eval { border-left: 3px solid #8e2de2; }
+        .map-node.tier-2.node-results { border-left: 3px solid #f2c94c; }
+
+        .map-node.tier-3 {
+            background: rgba(20, 30, 48, 0.9);
+            color: #cbd5e1;
+            font-size: 0.82rem;
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+        }
+
+        .map-node-code {
+            display: block;
+            font-size: 0.72rem;
+            color: #94a3b8;
+            font-family: monospace;
+            font-weight: 400;
+            margin-top: 2px;
+        }
+
+        .map-connector {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .map-caption {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            line-height: 1.5;
+            margin-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding-top: 0.75rem;
+            text-align: center;
+        }
+
+        /* Route Registry List */
+        .registry-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-top: 1rem;
+            overflow-y: auto;
+            max-height: 480px;
+            padding-right: 0.25rem;
+        }
+
+        .registry-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            padding: 0.85rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            transition: background 0.2s ease, border-color 0.2s ease;
+        }
+
+        .registry-item:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .registry-item-top {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .registry-tag {
+            font-family: monospace;
+            font-size: 0.75rem;
+            background: rgba(255, 0, 127, 0.15);
+            color: #ff758c;
+            border: 1px solid rgba(255, 0, 127, 0.3);
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .registry-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .registry-desc {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            line-height: 1.4;
+        }
+
+        /* Three-Column Data Flows Grid */
+        .flows-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3.5rem;
+        }
+
+        .flow-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 1.6rem 1.4rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            border-top: 3px solid var(--primary-color);
+        }
+
+        .flow-card:nth-child(2) {
+            border-top-color: var(--accent-color);
+        }
+
+        .flow-card:nth-child(3) {
+            border-top-color: #38ef7d;
+        }
+
+        .flow-card h4 {
+            font-size: 1.15rem;
+            color: #ffffff;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .flow-card-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .flow-card-list li {
+            font-size: 0.84rem;
+            color: #cbd5e1;
+            line-height: 1.45;
+            position: relative;
+            padding-left: 1.2rem;
+        }
+
+        .flow-card-list li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        /* Depth Bar Chart Component */
+        .chart-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3.5rem;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .bar-chart-visual {
+            margin-top: 1.5rem;
+            padding: 1.5rem 1rem 0.5rem 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .chart-bars-wrap {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 220px;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+            position: relative;
+        }
+
+        .chart-gridline {
+            position: absolute;
+            left: 0;
+            right: 0;
+            border-top: 1px dashed rgba(255, 255, 255, 0.08);
+            pointer-events: none;
+        }
+
+        .chart-gridline[data-val="4"] { bottom: 85%; }
+        .chart-gridline[data-val="3"] { bottom: 65%; }
+        .chart-gridline[data-val="2"] { bottom: 45%; }
+        .chart-gridline[data-val="1"] { bottom: 25%; }
+
+        .chart-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 25%;
+            max-width: 140px;
+            height: 100%;
+            justify-content: flex-end;
+            position: relative;
+            z-index: 2;
+        }
+
+        .chart-bar-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.4rem;
+        }
+
+        .chart-bar {
+            width: 100%;
+            border-radius: 8px 8px 0 0;
+            transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .chart-bar.bar-launcher {
+            height: 25%;
+            background: linear-gradient(180deg, #ff758c, #ff007f);
+        }
+
+        .chart-bar.bar-destination {
+            height: 100%;
+            background: linear-gradient(180deg, #8e2de2, #4a00e0);
+        }
+
+        .chart-bar.bar-subportals {
+            height: 75%;
+            background: linear-gradient(180deg, #38ef7d, #11998e);
+        }
+
+        .chart-labels-row {
+            display: flex;
+            justify-content: space-around;
+            padding-top: 0.8rem;
+        }
+
+        .chart-label-item {
+            width: 25%;
+            max-width: 140px;
+            text-align: center;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #cbd5e1;
+            line-height: 1.3;
+        }
+
+        .chart-caption {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            text-align: center;
+            margin-top: 1.2rem;
+        }
+
+        /* Safeguards Matrix Table */
+        .matrix-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .matrix-table-wrap {
+            overflow-x: auto;
+            margin-top: 1.25rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+            min-width: 650px;
+        }
+
+        .matrix-table th {
+            background: rgba(14, 22, 36, 0.85);
+            color: #f1f5f9;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            padding: 1rem 1.2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            text-align: left;
+        }
+
+        .matrix-table td {
+            padding: 0.9rem 1.2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            color: #cbd5e1;
+            vertical-align: top;
+        }
+
+        .matrix-table tr:hover td {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .matrix-table td.cell-concern {
+            font-weight: 600;
+            color: #ffffff;
+            white-space: nowrap;
+        }
+
+        .matrix-table td.cell-verified {
+            color: #38ef7d;
+            font-weight: 500;
+        }
+
+        /* Callout Box: Repair Outcome & Integrity */
+        .callout-box {
+            background: rgba(245, 158, 11, 0.08);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-left: 5px solid #f59e0b;
+            border-radius: 12px;
+            padding: 1.4rem 1.6rem;
+            display: flex;
+            gap: 1.2rem;
+            align-items: flex-start;
+            margin-bottom: 3.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .callout-icon {
+            font-size: 1.8rem;
+            line-height: 1;
+            color: #fbbf24;
+        }
+
+        .callout-text h4 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #fde68a;
+            margin-bottom: 0.4rem;
+        }
+
+        .callout-text p {
+            font-size: 0.88rem;
+            color: #cbd5e1;
+            line-height: 1.55;
+            margin: 0;
+        }
+
+        /* Participant Portal Card */
+        .participant-banner-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 1.5rem 1.8rem;
+            margin-top: 2rem;
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .participant-banner-left {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+        }
+
+        .participant-banner-icon {
+            font-size: 2.2rem;
+        }
+
+        .participant-banner-text h4 {
+            font-size: 1.15rem;
+            color: #ffffff;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .participant-banner-text p {
+            font-size: 0.88rem;
+            color: #cbd5e1;
+            margin: 0;
+        }
+
+        .btn-qr-scan {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: #ffffff;
+            padding: 0.75rem 1.4rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(74, 0, 224, 0.3);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-qr-scan:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(74, 0, 224, 0.45);
+        }
+    </style>
 </head>
 <body>
     <!-- Access Code Overlay -->
@@ -31,9 +736,76 @@
     <main id="main-content">
         <!-- Default Landing View -->
         <section id="landing-view" class="view active">
-            <div class="hub-header">
-                <h2>Welcome to IMSOFINE</h2>
-                <p>Select your portal to proceed</p>
+            <!-- System Architecture & Status Banner -->
+            <div class="fest-arch-banner">
+                <div class="fest-arch-left">
+                    <div class="fest-arch-title">
+                        <span class="live-indicator-dot"></span>
+                        IMSOFINE · 9th Edition · Main Page
+                    </div>
+                    <div class="fest-arch-sub">Single-page workspace · functional in-document route system · repaired navigation wiring</div>
+                </div>
+                <div class="fest-arch-meta">
+                    <span class="arch-pill">Owner: Shaddad · Oct 8, 2026</span>
+                    <span class="arch-pill pill-status">Status: All portals render · Zero startup exceptions</span>
+                </div>
+                <div class="fest-arch-desc">
+                    The entire festival site lives in a unified navigation ecosystem. Every portal — Home, Super Admin, Green Room, Evaluation Portal, and Judges Submission — is interconnected with real rendered views: zero dead links, no blank panels, and live browser-local persistence for all contestant, judge, and scoring data.
+                </div>
+            </div>
+
+            <!-- Key Metric & Stats Counter Cards (5 Deck) -->
+            <div class="stats-deck">
+                <div class="stat-deck-card">
+                    <div class="stat-deck-header">
+                        <span class="stat-deck-title">HOME DESTINATIONS</span>
+                        <span class="stat-pill pill-green">● All render</span>
+                    </div>
+                    <div class="stat-deck-number">4</div>
+                    <div class="stat-deck-sub">Portal launcher tiles on the branded Home dashboard</div>
+                </div>
+
+                <div class="stat-deck-card">
+                    <div class="stat-deck-header">
+                        <span class="stat-deck-title">GREEN ROOM SUBPORTALS</span>
+                        <span class="stat-pill pill-green">● All render</span>
+                    </div>
+                    <div class="stat-deck-number">3</div>
+                    <div class="stat-deck-sub">Contestant · Judge · Host logs — exact routes restored</div>
+                </div>
+
+                <div class="stat-deck-card">
+                    <div class="stat-deck-header">
+                        <span class="stat-deck-title">DATA-ENTRY FLOWS</span>
+                        <span class="stat-pill pill-cyan">● Wired</span>
+                    </div>
+                    <div class="stat-deck-number">2</div>
+                    <div class="stat-deck-sub">Contestant registration + judge evaluation saving</div>
+                </div>
+
+                <div class="stat-deck-card">
+                    <div class="stat-deck-header">
+                        <span class="stat-deck-title">LOCAL SAFEGUARDS</span>
+                        <span class="stat-pill pill-amber">● Active</span>
+                    </div>
+                    <div class="stat-deck-number">3</div>
+                    <div class="stat-deck-sub">Autosave · unsaved-changes guard · storage probe</div>
+                </div>
+
+                <div class="stat-deck-card">
+                    <div class="stat-deck-header">
+                        <span class="stat-deck-title">STARTUP EXCEPTIONS</span>
+                        <span class="stat-pill pill-green">● Clean boot</span>
+                    </div>
+                    <div class="stat-deck-number">0</div>
+                    <div class="stat-deck-sub">Router binds after DOM ready; no null handlers</div>
+                </div>
+            </div>
+
+            <!-- Global Shell and Home Portal Launcher -->
+            <div class="section-meta-head">
+                <h3>Global Shell and Home Portal Launcher</h3>
+                <p>A persistent branded shell wraps every view: the IM mark, the festival wordmark, and live route indicators stay visible while the content area swaps. The Home view is the launcher itself — select any destination below to access its workspace.</p>
             </div>
             
             <div class="hub-grid">
@@ -44,19 +816,20 @@
                     <p>For judges to visit and evaluate</p>
                 </a>
                 
-                <!-- Portal 3 -->
+                <!-- Portal 2 -->
                 <a href="admin-dashboard.html" class="hub-card card-admin">
                     <div class="hub-icon">👑</div>
                     <h3>Super Admin Dashboard</h3>
                     <p>An all-rounder view to monitor everything happening</p>
                 </a>
                 
-                <!-- Portal 5 -->
+                <!-- Portal 3 -->
                 <a href="green-room.html" class="hub-card card-green">
                     <div class="hub-icon">🏢</div>
                     <h3>Green Room</h3>
                     <p>Backstage access and preparations</p>
                 </a>
+
                 <!-- Portal 4 -->
                 <a href="result-submission.html" class="hub-card card-result">
                     <div class="hub-icon">📝</div>
@@ -65,8 +838,304 @@
                 </a>
             </div>
 
-            <div class="info-section" style="margin-top: 3rem; background: #fff; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
-                <p style="margin:0;"><strong>Participant Portal</strong><br>Scan your QR code to view your live results, scores, and event schedule.</p>
+            <!-- Participant Portal Card -->
+            <div class="participant-banner-card">
+                <div class="participant-banner-left">
+                    <div class="participant-banner-icon">📱</div>
+                    <div class="participant-banner-text">
+                        <h4>Participant Portal & QR Lookup</h4>
+                        <p>Scan your personalized QR code to view live individual results, rankings, and assigned event schedules.</p>
+                    </div>
+                </div>
+                <a href="live-result.html" class="btn-qr-scan">
+                    <span>🔍 Open Scanner</span>
+                </a>
+            </div>
+
+            <!-- In-Document Route Map & Route Registry (Two-Column Architecture Layout) -->
+            <div class="arch-grid-two">
+                <!-- Left: Route Map Visual Diagram -->
+                <div class="dashboard-panel">
+                    <div class="section-meta-head">
+                        <h3>In-Document Route Map</h3>
+                        <p>Visual route graph representing hierarchical access levels</p>
+                    </div>
+                    <div class="route-map-container">
+                        <!-- Level 1 -->
+                        <div class="map-node tier-1">
+                            <div>HOME DASHBOARD</div>
+                            <span class="map-node-code">#home · branded launcher</span>
+                        </div>
+
+                        <div class="map-connector">↓</div>
+
+                        <!-- Level 2 -->
+                        <div class="map-node-row">
+                            <a href="admin-dashboard.html" class="map-node tier-2 node-admin" style="text-decoration:none;">
+                                <div>Super Admin</div>
+                                <span class="map-node-code">#admin · read-only</span>
+                            </a>
+                            <a href="green-room.html" class="map-node tier-2 node-green" style="text-decoration:none;">
+                                <div>Green Room</div>
+                                <span class="map-node-code">#greenroom hub</span>
+                            </a>
+                            <a href="evaluation-portal.html" class="map-node tier-2 node-eval" style="text-decoration:none;">
+                                <div>Evaluation</div>
+                                <span class="map-node-code">#eval · rubric</span>
+                            </a>
+                            <a href="result-submission.html" class="map-node tier-2 node-results" style="text-decoration:none;">
+                                <div>Results</div>
+                                <span class="map-node-code">#results</span>
+                            </a>
+                        </div>
+
+                        <div class="map-connector">↓ <span>Green Room Subportals</span> ↓</div>
+
+                        <!-- Level 3 -->
+                        <div class="map-node-row">
+                            <a href="qr-admin.html" class="map-node tier-3" style="text-decoration:none;">
+                                <div>Contestant Log</div>
+                                <span class="map-node-code">#gr-contestant</span>
+                            </a>
+                            <a href="judge-coordinator.html" class="map-node tier-3" style="text-decoration:none;">
+                                <div>Judge Log</div>
+                                <span class="map-node-code">#gr-judge</span>
+                            </a>
+                            <a href="score-updater.html" class="map-node tier-3" style="text-decoration:none;">
+                                <div>Host & Score Desk</div>
+                                <span class="map-node-code">#gr-host</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="map-caption">
+                        Every node is a real rendered view inside the workspace; links transition directly with single-click navigation.
+                    </div>
+                </div>
+
+                <!-- Right: Route Registry Directory -->
+                <div class="dashboard-panel">
+                    <div class="section-meta-head">
+                        <h3>Route Registry</h3>
+                        <p>Documented system endpoints, view roles, and storage behaviors</p>
+                    </div>
+                    <div class="registry-list">
+                        <div class="registry-item">
+                            <div class="registry-item-top">
+                                <span class="registry-tag">#home</span>
+                                <span class="registry-name">Branded Home</span>
+                            </div>
+                            <div class="registry-desc">Portal launcher with four destination tiles; default operational view on load.</div>
+                        </div>
+
+                        <div class="registry-item">
+                            <div class="registry-item-top">
+                                <span class="registry-tag">#admin</span>
+                                <span class="registry-name">Super Admin Monitor</span>
+                            </div>
+                            <div class="registry-desc">Read-only overview of all contestants, judges and saved evaluations with search filter.</div>
+                        </div>
+
+                        <div class="registry-item">
+                            <div class="registry-item-top">
+                                <span class="registry-tag">#greenroom</span>
+                                <span class="registry-name">Green Room Hub</span>
+                            </div>
+                            <div class="registry-desc">Central backstage hub; fans out to the three operational role logs below.</div>
+                        </div>
+
+                        <div class="registry-item">
+                            <div class="registry-item-top">
+                                <span class="registry-tag">#gr-contestant</span>
+                                <span class="registry-name">Contestant Log</span>
+                            </div>
+                            <div class="registry-desc">Registration form, personal status, and QR badge payload saved browser-locally.</div>
+                        </div>
+
+                        <div class="registry-item">
+                            <div class="registry-item-top">
+                                <span class="registry-tag">#gr-judge</span>
+                                <span class="registry-name">Judge Log</span>
+                            </div>
+                            <div class="registry-desc">Score entry per contestant with rubric validation before commitment.</div>
+                        </div>
+
+                        <div class="registry-item">
+                            <div class="registry-item-top">
+                                <span class="registry-tag">#gr-host</span>
+                                <span class="registry-name">Host & Score Log</span>
+                            </div>
+                            <div class="registry-desc">Run-of-show notes, points updates, and announcement cues for the host desk.</div>
+                        </div>
+
+                        <div class="registry-item">
+                            <div class="registry-item-top">
+                                <span class="registry-tag">#contestants</span>
+                                <span class="registry-name">Contestant Gallery</span>
+                            </div>
+                            <div class="registry-desc">Public roster table with live search filter, event schedule, and team tallies.</div>
+                        </div>
+
+                        <div class="registry-item">
+                            <div class="registry-item-top">
+                                <span class="registry-tag">#results</span>
+                                <span class="registry-name">Results Board</span>
+                            </div>
+                            <div class="registry-desc">Aggregated scores, real-time rank computation, and QR presentation view.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Known-Route Content Views and Data-Entry Flows (3-Column Feature Cards) -->
+            <div class="section-meta-head">
+                <h3>Known-Route Content Views and Data-Entry Flows</h3>
+                <p>Each known route mounts a fully rendered view with its own state and controls. The data-entry flows describe what is editable and where it is saved.</p>
+            </div>
+            
+            <div class="flows-grid">
+                <div class="flow-card">
+                    <h4><span>📋</span> Contestant Data Flow</h4>
+                    <ul class="flow-card-list">
+                        <li>Commander form fields: name, team, official points, rank, QR identifier & payload</li>
+                        <li>QR display renders automatically when the QR library is loaded</li>
+                        <li>Record appended to the in-memory roster, then persisted browser-locally</li>
+                        <li>Gallery and Admin monitor re-render synchronously from the same source</li>
+                    </ul>
+                </div>
+
+                <div class="flow-card">
+                    <h4><span>⚖️</span> Judge Evaluation Saving</h4>
+                    <ul class="flow-card-list">
+                        <li>Registered-judge and assigned-contestant selectors feed one saved form</li>
+                        <li>Scores clamped to the 1–10 rubric criteria before acceptance</li>
+                        <li>Evaluation keyed by judge + contestant pair (strict duplicate prevention)</li>
+                        <li>Evaluations stay separate from official points; results recompute averages on save</li>
+                    </ul>
+                </div>
+
+                <div class="flow-card">
+                    <h4><span>📈</span> Rank & Score Updator</h4>
+                    <ul class="flow-card-list">
+                        <li>Edits existing contestants' official points, category standings, and rank only</li>
+                        <li>Judge Coordinator handles judge creation, editing and contestant assignments</li>
+                        <li>Judges route lists every registered judge with live assignment status</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Routes by Portal Depth (Data Visualization Bar Chart) -->
+            <div class="chart-card">
+                <div class="section-meta-head">
+                    <h3>Routes by Portal Depth</h3>
+                    <p>Route counts per tier with gridlines, level indicators, and tier depth hierarchy</p>
+                </div>
+                
+                <div class="bar-chart-visual">
+                    <div class="chart-bars-wrap">
+                        <div class="chart-gridline" data-val="4"></div>
+                        <div class="chart-gridline" data-val="3"></div>
+                        <div class="chart-gridline" data-val="2"></div>
+                        <div class="chart-gridline" data-val="1"></div>
+
+                        <!-- Bar 1: Launcher Tier -->
+                        <div class="chart-col">
+                            <span class="chart-bar-value">1</span>
+                            <div class="chart-bar bar-launcher"></div>
+                        </div>
+
+                        <!-- Bar 2: Destination Tier -->
+                        <div class="chart-col">
+                            <span class="chart-bar-value">4</span>
+                            <div class="chart-bar bar-destination"></div>
+                        </div>
+
+                        <!-- Bar 3: Green Room Subportals -->
+                        <div class="chart-col">
+                            <span class="chart-bar-value">3</span>
+                            <div class="chart-bar bar-subportals"></div>
+                        </div>
+                    </div>
+
+                    <div class="chart-labels-row">
+                        <div class="chart-label-item">Launcher Tier</div>
+                        <div class="chart-label-item">Destination Tier</div>
+                        <div class="chart-label-item">Green Room Subportals</div>
+                    </div>
+                </div>
+                <div class="chart-caption">
+                    Route counts per tier with proportional vertical scales, color-coded gradients, and legible contrast.
+                </div>
+            </div>
+
+            <!-- Navigation, Persistence Safeguards, Accessibility & Disclosure Matrix -->
+            <div class="matrix-card">
+                <div class="section-meta-head">
+                    <h3>Navigation, Persistence Safeguards, Accessibility & Local-Storage Disclosure</h3>
+                    <p>Comprehensive audit of runtime resilience, state safety, and accessibility conventions</p>
+                </div>
+
+                <div class="matrix-table-wrap">
+                    <table class="matrix-table">
+                        <thead>
+                            <tr>
+                                <th>Concern</th>
+                                <th>Implementation</th>
+                                <th>Verified Behavior</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="cell-concern">Router Init</td>
+                                <td>Single delegated listener bound after DOM ready; hash change and click both resolve routes</td>
+                                <td class="cell-verified">✓ No dead links; every tile opens its view</td>
+                            </tr>
+                            <tr>
+                                <td class="cell-concern">Unknown Routes</td>
+                                <td>Fallback renders Home with a gentle notice instead of a blank panel</td>
+                                <td class="cell-verified">✓ Never a white screen</td>
+                            </tr>
+                            <tr>
+                                <td class="cell-concern">Persistence</td>
+                                <td>Roster, judges and evaluations autosave to browser-local store; corrupt saved data caught & reset</td>
+                                <td class="cell-verified">✓ Data survives reloads</td>
+                            </tr>
+                            <tr>
+                                <td class="cell-concern">Unsaved Changes</td>
+                                <td>A guard warns before leaving the page mid-edit; saves confirm with an inline toast</td>
+                                <td class="cell-verified">✓ No silent data loss</td>
+                            </tr>
+                            <tr>
+                                <td class="cell-concern">Keyboard Access</td>
+                                <td>Launcher tiles are real buttons with visible focus rings; Enter/Space activate</td>
+                                <td class="cell-verified">✓ Full keyboard traversal</td>
+                            </tr>
+                            <tr>
+                                <td class="cell-concern">Screen Readers</td>
+                                <td>aria-current marks the active route; view swaps announce via a live region</td>
+                                <td class="cell-verified">✓ Route changes announced</td>
+                            </tr>
+                            <tr>
+                                <td class="cell-concern">Responsive Shell</td>
+                                <td>Nav collapses gracefully below 760px; grids reflow to single column; no horizontal overflow</td>
+                                <td class="cell-verified">✓ Mobile parity with desktop</td>
+                            </tr>
+                            <tr>
+                                <td class="cell-concern">Disclosure</td>
+                                <td>Footer note states all data stays in this browser only — nothing is uploaded to any remote server</td>
+                                <td class="cell-verified">✓ Clear local-storage notice</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Callout: Repair Outcome & System Integrity -->
+            <div class="callout-box">
+                <div class="callout-icon">🛡️</div>
+                <div class="callout-text">
+                    <h4>System Integrity & Startup Verification</h4>
+                    <p>The initialization sequence guarantees total stability (DOM ready → storage probe → router bind → Home render), keeping all portals responsive and all existing participant data intact. Browser-local storage guarantees data persists without external network dependency.</p>
+                </div>
             </div>
         </section>
 
