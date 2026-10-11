@@ -133,6 +133,237 @@
             box-shadow: 0 4px 10px rgba(242, 153, 74, 0.2);
             display: inline-block;
         }
+
+        /* Team Rank & Points Specific Styling */
+        .team-podium {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+        .podium-card {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 1.3rem 1rem;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+            border: 2px solid #eef0f3;
+            text-align: center;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .podium-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(74, 0, 224, 0.15);
+        }
+        .podium-rank-1 {
+            border-color: #f1c40f;
+            background: linear-gradient(180deg, #fffcf0 0%, #ffffff 100%);
+        }
+        .podium-rank-2 {
+            border-color: #bdc3c7;
+            background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+        }
+        .podium-rank-3 {
+            border-color: #e67e22;
+            background: linear-gradient(180deg, #fdf8f4 0%, #ffffff 100%);
+        }
+        .podium-medal {
+            font-size: 2.2rem;
+            line-height: 1;
+            margin-bottom: 0.4rem;
+        }
+        .podium-team-name {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0.4rem;
+        }
+        .podium-points {
+            font-size: 1.7rem;
+            font-weight: 800;
+            color: var(--primary-color);
+        }
+        .podium-points-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .team-table-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+        .btn-add-team {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            color: white;
+            border: none;
+            padding: 0.65rem 1.3rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(17, 153, 142, 0.25);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-add-team:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(17, 153, 142, 0.4);
+        }
+        .btn-reset-team {
+            background: #f1f2f6;
+            color: #57606f;
+            border: 1px solid #ced6e0;
+            padding: 0.65rem 1.1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-reset-team:hover {
+            background: #dfe4ea;
+            color: #2f3542;
+        }
+
+        .team-tag {
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .team-pill-red {
+            background: rgba(231, 76, 60, 0.12);
+            color: #c0392b;
+            border: 1px solid rgba(231, 76, 60, 0.35);
+        }
+        .team-pill-green {
+            background: rgba(39, 174, 96, 0.12);
+            color: #27ae60;
+            border: 1px solid rgba(39, 174, 96, 0.35);
+        }
+        .team-pill-blue {
+            background: rgba(41, 128, 185, 0.12);
+            color: #2980b9;
+            border: 1px solid rgba(41, 128, 185, 0.35);
+        }
+        .team-pill-default {
+            background: rgba(142, 45, 226, 0.12);
+            color: #8e2de2;
+            border: 1px solid rgba(142, 45, 226, 0.35);
+        }
+
+        .point-edit-group {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #f8f9fa;
+            padding: 4px 6px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        .point-input {
+            width: 75px;
+            padding: 0.45rem 0.4rem;
+            font-size: 1rem;
+            font-weight: 700;
+            text-align: center;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            outline: none;
+            color: var(--primary-color);
+            background: #ffffff;
+        }
+        .point-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(74, 0, 224, 0.2);
+        }
+        .btn-step {
+            background: #e2e8f0;
+            border: none;
+            color: #334155;
+            font-weight: 700;
+            padding: 0 8px;
+            height: 32px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+        }
+        .btn-step:hover {
+            background: #cbd5e1;
+            transform: scale(1.05);
+        }
+        .btn-save-point {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 0.45rem 0.9rem;
+            height: 32px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(74, 0, 224, 0.25);
+        }
+        .btn-save-point:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(74, 0, 224, 0.4);
+        }
+        .btn-delete-team {
+            background: transparent;
+            color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            margin-left: 4px;
+        }
+        .btn-delete-team:hover {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .toast-notification {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            color: white;
+            padding: 0.9rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            font-weight: 600;
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            pointer-events: none;
+        }
+        .toast-notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -156,7 +387,7 @@
                     <span class="option-icon">👤</span>
                     Participant Rank & Score
                 </a>
-                <a href="#" class="updater-option-btn">
+                <a href="#team-rank" class="updater-option-btn" id="btn-team-rank" onclick="openTeamRank(event)">
                     <span class="option-icon">👥</span>
                     Team Rank
                 </a>
@@ -188,22 +419,318 @@
                 <button id="btn-back-options" class="back-btn" onclick="closeParticipantScores(event)" style="margin-bottom: 2rem;">← Back to Options</button>
             </div>
 
+            <!-- Team Rank Section -->
+            <div id="team-rank-section" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; text-align: left;">
+                    <div>
+                        <h3 style="color: var(--primary-color); font-size: 1.7rem; margin-bottom: 0.3rem;">Team Rank & Points</h3>
+                        <p style="color: #666; font-size: 0.95rem;">Live team rankings. View and edit team points directly.</p>
+                    </div>
+                    <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
+                        <button class="btn-add-team" onclick="showAddTeamModal()">➕ Add Team</button>
+                        <button class="btn-reset-team" onclick="resetTeamPoints()">🔄 Reset</button>
+                    </div>
+                </div>
+
+                <!-- Live Podium Showcase -->
+                <div class="team-podium" id="team-podium-cards">
+                    <!-- Populated dynamically -->
+                </div>
+
+                <!-- Team Points Table -->
+                <div class="score-table-wrapper">
+                    <table class="score-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 100px;">Rank</th>
+                                <th>Team Name</th>
+                                <th>Total Points</th>
+                                <th style="min-width: 270px;">Edit Points</th>
+                                <th style="text-align: center; width: 110px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="team-rank-table-body">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style="text-align: center; margin-top: 1rem; margin-bottom: 2rem;">
+                    <button id="btn-back-team-options" class="back-btn" onclick="closeTeamRank(event)">← Back to Options</button>
+                </div>
+            </div>
+
             <a href="green-room.html" class="back-btn" id="btn-back-greenroom">← Back to Green Room</a>
         </div>
     </main>
+
+    <!-- Add Team Modal -->
+    <div id="addTeamModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 10000; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+        <div style="background: white; border-radius: 16px; padding: 2rem; max-width: 420px; width: 90%; box-shadow: 0 20px 40px rgba(0,0,0,0.2); text-align: left; color: #333;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h3 style="color: var(--primary-color); font-size: 1.4rem; margin: 0;">➕ Add New Team</h3>
+                <button onclick="closeAddTeamModal()" style="background: transparent; border: none; font-size: 1.6rem; cursor: pointer; color: #888; line-height: 1;">&times;</button>
+            </div>
+            <div style="margin-bottom: 1.2rem;">
+                <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; font-size: 0.9rem; color: #444;">Team Name</label>
+                <input type="text" id="newTeamName" placeholder="e.g. Team Yellow" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; font-size: 1rem; outline: none; box-sizing: border-box;">
+            </div>
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; font-size: 0.9rem; color: #444;">Initial Points</label>
+                <input type="number" id="newTeamPoints" placeholder="0" min="0" value="0" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; font-size: 1rem; outline: none; box-sizing: border-box;">
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 0.8rem;">
+                <button onclick="closeAddTeamModal()" style="padding: 0.7rem 1.2rem; border: 1px solid #ddd; border-radius: 8px; background: #f8f9fa; cursor: pointer; font-weight: 600;">Cancel</button>
+                <button onclick="confirmAddTeam()" style="padding: 0.7rem 1.5rem; border: none; border-radius: 8px; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; cursor: pointer; font-weight: 600;">Add Team</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Element -->
+    <div id="toastNotification" class="toast-notification"></div>
 
     <footer>
         <p>&copy; 2026 Organized by Event Core | IMSOFINE</p>
     </footer>
 
-    <!-- UI Logic for toggling -->
+    <!-- UI Logic for toggling & Team Points Management -->
     <script>
+        // Team Rank & Points Store
+        const DEFAULT_TEAMS = [
+            { id: 'team-red', name: 'Team Red', points: 150, color: 'red' },
+            { id: 'team-green', name: 'Team Green', points: 135, color: 'green' },
+            { id: 'team-blue', name: 'Team Blue', points: 120, color: 'blue' }
+        ];
+
+        function getStoredTeams() {
+            try {
+                const stored = localStorage.getItem('imsofine_team_scores');
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        return parsed;
+                    }
+                }
+            } catch (e) {
+                console.error("Error reading teams from localStorage:", e);
+            }
+            return JSON.parse(JSON.stringify(DEFAULT_TEAMS));
+        }
+
+        function saveStoredTeams(teams) {
+            try {
+                localStorage.setItem('imsofine_team_scores', JSON.stringify(teams));
+            } catch (e) {
+                console.error("Error saving teams:", e);
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toastNotification');
+            if (!toast) return;
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function getTeamColorClass(name) {
+            const lower = (name || '').toLowerCase();
+            if (lower.includes('red')) return 'team-pill-red';
+            if (lower.includes('green')) return 'team-pill-green';
+            if (lower.includes('blue')) return 'team-pill-blue';
+            return 'team-pill-default';
+        }
+
+        function renderTeamRankTable() {
+            const teams = getStoredTeams();
+            // Sort teams descending by points
+            teams.sort((a, b) => (Number(b.points) || 0) - (Number(a.points) || 0));
+
+            // Assign ranks (handling ties)
+            let currentRank = 1;
+            for (let i = 0; i < teams.length; i++) {
+                if (i > 0 && Number(teams[i].points) < Number(teams[i - 1].points)) {
+                    currentRank = i + 1;
+                }
+                teams[i].rank = currentRank;
+            }
+
+            // Render Podium (Top 3)
+            const podiumContainer = document.getElementById('team-podium-cards');
+            if (podiumContainer) {
+                podiumContainer.innerHTML = '';
+                const medals = ['🥇', '🥈', '🥉'];
+                const rankClasses = ['podium-rank-1', 'podium-rank-2', 'podium-rank-3'];
+                
+                const topTeams = teams.slice(0, 3);
+                topTeams.forEach((team, idx) => {
+                    const card = document.createElement('div');
+                    card.className = `podium-card ${rankClasses[idx] || ''}`;
+                    card.innerHTML = `
+                        <div class="podium-medal">${medals[idx] || '🏅'}</div>
+                        <div class="podium-team-name">${team.name}</div>
+                        <div class="podium-points">${team.points}</div>
+                        <div class="podium-points-label">${team.rank === 1 ? '1st Place' : team.rank === 2 ? '2nd Place' : '3rd Place'}</div>
+                    `;
+                    podiumContainer.appendChild(card);
+                });
+            }
+
+            // Render Table
+            const tbody = document.getElementById('team-rank-table-body');
+            if (tbody) {
+                tbody.innerHTML = '';
+                if (teams.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2rem; color: #888;">No teams registered. Click "➕ Add Team" to start.</td></tr>';
+                    return;
+                }
+
+                teams.forEach((team) => {
+                    const tr = document.createElement('tr');
+                    
+                    let rankBadge = '';
+                    if (team.rank === 1) {
+                        rankBadge = '<span class="rank-badge" style="background: linear-gradient(135deg, #f1c40f, #f39c12); box-shadow: 0 4px 10px rgba(241, 196, 15, 0.3);">🥇 1st</span>';
+                    } else if (team.rank === 2) {
+                        rankBadge = '<span class="rank-badge" style="background: linear-gradient(135deg, #bdc3c7, #95a5a6); box-shadow: 0 4px 10px rgba(189, 195, 199, 0.3);">🥈 2nd</span>';
+                    } else if (team.rank === 3) {
+                        rankBadge = '<span class="rank-badge" style="background: linear-gradient(135deg, #e67e22, #d35400); box-shadow: 0 4px 10px rgba(230, 126, 34, 0.3);">🥉 3rd</span>';
+                    } else {
+                        rankBadge = `<span class="rank-badge" style="background: #95a5a6;">${team.rank}th</span>`;
+                    }
+
+                    const colorClass = getTeamColorClass(team.name);
+
+                    tr.innerHTML = `
+                        <td>${rankBadge}</td>
+                        <td>
+                            <span class="team-tag ${colorClass}">
+                                👥 ${team.name}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="score-badge" style="font-size: 1rem; min-width: 50px; text-align: center;">${team.points} pts</span>
+                        </td>
+                        <td>
+                            <div class="point-edit-group">
+                                <button class="btn-step" onclick="adjustTeamPoint('${team.id}', -5)" title="Minus 5">-5</button>
+                                <button class="btn-step" onclick="adjustTeamPoint('${team.id}', -1)" title="Minus 1">-1</button>
+                                <input type="number" id="input-point-${team.id}" class="point-input" value="${team.points}" min="0" onkeydown="if(event.key==='Enter') saveTeamPoint('${team.id}')">
+                                <button class="btn-step" onclick="adjustTeamPoint('${team.id}', 1)" title="Plus 1">+1</button>
+                                <button class="btn-step" onclick="adjustTeamPoint('${team.id}', 5)" title="Plus 5">+5</button>
+                                <button class="btn-step" onclick="adjustTeamPoint('${team.id}', 10)" title="Plus 10">+10</button>
+                            </div>
+                        </td>
+                        <td style="text-align: center;">
+                            <button class="btn-save-point" onclick="saveTeamPoint('${team.id}')" title="Save Points">💾 Save</button>
+                            <button class="btn-delete-team" onclick="deleteTeam('${team.id}')" title="Delete Team">🗑️</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+        }
+
+        function saveTeamPoint(teamId) {
+            const input = document.getElementById(`input-point-${teamId}`);
+            if (!input) return;
+            const newPoints = parseInt(input.value, 10);
+            if (isNaN(newPoints) || newPoints < 0) {
+                alert("Please enter a valid positive number for points.");
+                return;
+            }
+
+            const teams = getStoredTeams();
+            const team = teams.find(t => t.id === teamId);
+            if (team) {
+                team.points = newPoints;
+                saveStoredTeams(teams);
+                showToast(`✅ Updated ${team.name} points to ${newPoints}!`);
+                renderTeamRankTable();
+            }
+        }
+
+        function adjustTeamPoint(teamId, delta) {
+            const input = document.getElementById(`input-point-${teamId}`);
+            if (!input) return;
+            let current = parseInt(input.value, 10) || 0;
+            current = Math.max(0, current + delta);
+            input.value = current;
+            saveTeamPoint(teamId);
+        }
+
+        function showAddTeamModal() {
+            const modal = document.getElementById('addTeamModal');
+            if (modal) {
+                modal.style.display = 'flex';
+                document.getElementById('newTeamName').value = '';
+                document.getElementById('newTeamPoints').value = '0';
+                setTimeout(() => document.getElementById('newTeamName').focus(), 100);
+            }
+        }
+
+        function closeAddTeamModal() {
+            const modal = document.getElementById('addTeamModal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function confirmAddTeam() {
+            const nameInput = document.getElementById('newTeamName');
+            const pointsInput = document.getElementById('newTeamPoints');
+            const name = (nameInput.value || '').trim();
+            const points = parseInt(pointsInput.value, 10) || 0;
+
+            if (!name) {
+                alert("Please enter a team name.");
+                return;
+            }
+
+            const teams = getStoredTeams();
+            const id = 'team-' + Date.now();
+            teams.push({
+                id: id,
+                name: name,
+                points: Math.max(0, points)
+            });
+
+            saveStoredTeams(teams);
+            closeAddTeamModal();
+            showToast(`🎉 Added ${name} with ${points} points!`);
+            renderTeamRankTable();
+        }
+
+        function deleteTeam(teamId) {
+            const teams = getStoredTeams();
+            const team = teams.find(t => t.id === teamId);
+            if (!team) return;
+
+            if (confirm(`Are you sure you want to remove "${team.name}"?`)) {
+                const updated = teams.filter(t => t.id !== teamId);
+                saveStoredTeams(updated);
+                showToast(`🗑️ Removed ${team.name}`);
+                renderTeamRankTable();
+            }
+        }
+
+        function resetTeamPoints() {
+            if (confirm("Reset all team points to the default competition standings?")) {
+                saveStoredTeams(DEFAULT_TEAMS);
+                showToast("🔄 Team points reset to default.");
+                renderTeamRankTable();
+            }
+        }
+
         function openParticipantScores(e) {
             if (e) e.preventDefault();
             document.getElementById('main-options').style.display = 'none';
+            const teamSection = document.getElementById('team-rank-section');
+            if (teamSection) teamSection.style.display = 'none';
             const backGreenRoom = document.getElementById('btn-back-greenroom');
             if (backGreenRoom) backGreenRoom.style.display = 'none';
             document.getElementById('participant-score-section').style.display = 'block';
+            window.location.hash = 'participant-scores';
             
             // Trigger Firebase listener
             window.dispatchEvent(new Event('startFirebaseListener'));
@@ -215,14 +742,42 @@
             document.getElementById('main-options').style.display = 'flex';
             const backGreenRoom = document.getElementById('btn-back-greenroom');
             if (backGreenRoom) backGreenRoom.style.display = 'inline-block';
-            
+            if (window.location.hash === '#participant-scores') {
+                history.pushState("", document.title, window.location.pathname + window.location.search);
+            }
             window.dispatchEvent(new Event('stopFirebaseListener'));
+        }
+
+        function openTeamRank(e) {
+            if (e) e.preventDefault();
+            document.getElementById('main-options').style.display = 'none';
+            const participantSection = document.getElementById('participant-score-section');
+            if (participantSection) participantSection.style.display = 'none';
+            const backGreenRoom = document.getElementById('btn-back-greenroom');
+            if (backGreenRoom) backGreenRoom.style.display = 'none';
+            
+            document.getElementById('team-rank-section').style.display = 'block';
+            window.location.hash = 'team-rank';
+            renderTeamRankTable();
+        }
+
+        function closeTeamRank(e) {
+            if (e) e.preventDefault();
+            document.getElementById('team-rank-section').style.display = 'none';
+            document.getElementById('main-options').style.display = 'flex';
+            const backGreenRoom = document.getElementById('btn-back-greenroom');
+            if (backGreenRoom) backGreenRoom.style.display = 'inline-block';
+            if (window.location.hash === '#team-rank') {
+                history.pushState("", document.title, window.location.pathname + window.location.search);
+            }
         }
 
         // Check hash on load
         window.addEventListener('DOMContentLoaded', () => {
             if (window.location.hash === '#participant-scores') {
                 openParticipantScores();
+            } else if (window.location.hash === '#team-rank') {
+                openTeamRank();
             }
         });
     </script>
