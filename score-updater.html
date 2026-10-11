@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         .updater-container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 4rem auto;
             padding: 3rem 2rem;
             background: var(--card-bg);
@@ -94,7 +94,7 @@
         .score-table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 600px;
+            min-width: 750px;
             text-align: left;
         }
         .score-table th {
@@ -124,9 +124,14 @@
             box-shadow: 0 4px 10px rgba(17, 153, 142, 0.2);
             display: inline-block;
         }
-        .score-judge-name {
+        .rank-badge {
+            background: linear-gradient(135deg, #f2994a, #f2c94c);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
             font-weight: 600;
-            color: #222;
+            box-shadow: 0 4px 10px rgba(242, 153, 74, 0.2);
+            display: inline-block;
         }
     </style>
 </head>
@@ -164,14 +169,16 @@
                     <table class="score-table">
                         <thead>
                             <tr>
-                                <th>Judge Name</th>
                                 <th>Program Name</th>
-                                <th>Marks/Score</th>
+                                <th>Student ID</th>
+                                <th>Point</th>
+                                <th>Rank</th>
+                                <th>Team Name</th>
                             </tr>
                         </thead>
                         <tbody id="score-table-body">
                             <tr>
-                                <td colspan="3" style="text-align: center; padding: 3rem; color: #666;">
+                                <td colspan="5" style="text-align: center; padding: 3rem; color: #666;">
                                     Waiting for live evaluations...
                                 </td>
                             </tr>
@@ -252,29 +259,42 @@
                     unsubScores = onSnapshot(q, (snapshot) => {
                         tableBody.innerHTML = '';
                         if (snapshot.empty) {
-                            tableBody.innerHTML = '<tr><td colspan="3" style="text-align: center; padding: 3rem; color: #666;">No evaluations submitted yet.</td></tr>';
+                            tableBody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 3rem; color: #666;">No evaluations submitted yet.</td></tr>';
                             return;
                         }
 
                         snapshot.forEach(doc => {
                             const data = doc.data();
                             const tr = document.createElement('tr');
+                            
+                            const program = data.programName || data.program || data.eventName || data.event || '-';
+                            const studentId = data.studentId || data.student_id || data.id || '-';
+                            const studentName = (data.studentName || data.name) ? `<div style="font-size: 0.85rem; color: #777;">${data.studentName || data.name}</div>` : '';
+                            const point = (data.point !== undefined && data.point !== null) ? data.point : ((data.score !== undefined && data.score !== null) ? data.score : (data.marks !== undefined ? data.marks : '-'));
+                            const rank = (data.rank !== undefined && data.rank !== null && data.rank !== '') ? data.rank : ((data.result !== undefined && data.result !== '') ? data.result : '-');
+                            const team = data.teamName || data.team_name || data.team || '-';
+
                             tr.innerHTML = `
-                                <td><span class="score-judge-name">${data.judgeName || '-'}</span></td>
-                                <td>${data.programName || '-'}</td>
-                                <td><span class="score-badge">${data.score || '-'}</span></td>
+                                <td><strong style="color: var(--primary-color);">${program}</strong></td>
+                                <td>
+                                    <span style="font-weight: 600;">#${studentId}</span>
+                                    ${studentName}
+                                </td>
+                                <td><span class="score-badge">${point}</span></td>
+                                <td><span class="rank-badge">${rank}</span></td>
+                                <td><span style="font-weight: 500; color: #555;">${team}</span></td>
                             `;
                             tableBody.appendChild(tr);
                         });
                     }, (error) => {
                         console.error("Error fetching evaluations: ", error);
-                        tableBody.innerHTML = `<tr><td colspan="3" style="text-align: center; padding: 3rem; color: #c0392b;">Error fetching real-time data. Check Firebase config/permissions.</td></tr>`;
+                        tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 3rem; color: #c0392b;">Error fetching real-time data. Check Firebase config/permissions.</td></tr>`;
                     });
                 } catch(e) {
                     console.error("Firebase query error:", e);
                 }
             } else if (!db) {
-                tableBody.innerHTML = '<tr><td colspan="3" style="text-align: center; padding: 3rem; color: #666;">Waiting for live evaluations... (Connect your Firebase configuration in the script tag to view real-time scores)</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 3rem; color: #666;">Waiting for live evaluations... (Connect your Firebase configuration in the script tag to view real-time scores)</td></tr>';
             }
         });
 
