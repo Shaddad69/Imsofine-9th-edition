@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commander Control Center - IMSOFINE 9th Edition</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --commander-primary: #1e3c72;
+            --commander-secondary: #2a5298;
+            --commander-accent: #00c6ff;
+        }
+
+        body {
+            background-color: var(--bg-color, #1a1e29);
+            color: var(--text-color, #333);
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .commander-container {
+            max-width: 1000px;
+            margin: 3rem auto;
+            padding: 2.5rem 2rem;
+            background: var(--card-bg, #ffffff);
+            border-radius: 18px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 90%;
+        }
+
+        .commander-icon {
+            font-size: 4.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .commander-title {
+            color: var(--commander-primary);
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .commander-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--commander-primary), var(--commander-secondary));
+            color: white;
+            padding: 0.35rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 4px 10px rgba(30, 60, 114, 0.25);
+        }
+
+        .commander-desc {
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat-box {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1.5rem 1rem;
+            border-left: 4px solid var(--commander-primary);
+            text-align: left;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.06);
+        }
+
+        .stat-box h4 {
+            margin: 0 0 0.5rem 0;
+            color: #777;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .stat-box .stat-num {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--commander-primary);
+        }
+
+        /* Quick Tools Grid */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+            text-align: left;
+        }
+
+        .tool-card {
+            background: #ffffff;
+            border: 1px solid #ebebeb;
+            border-radius: 14px;
+            padding: 1.6rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .tool-card h3 {
+            color: var(--commander-primary);
+            margin: 0 0 0.5rem 0;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tool-card p {
+            color: #666;
+            font-size: 0.92rem;
+            line-height: 1.5;
+            margin-bottom: 1.2rem;
+            flex-grow: 1;
+        }
+
+        .tool-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--commander-primary), var(--commander-secondary));
+            color: white;
+            text-decoration: none;
+            padding: 0.8rem 1.4rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(30, 60, 114, 0.2);
+        }
+
+        .tool-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(30, 60, 114, 0.35);
+        }
+
+        /* Direct Control Panel */
+        .control-panel {
+            background: #fafbfe;
+            border: 2px dashed #dbe2ef;
+            border-radius: 14px;
+            padding: 1.8rem;
+            margin-bottom: 2.5rem;
+            text-align: left;
+        }
+
+        .control-panel h3 {
+            color: var(--commander-primary);
+            margin-top: 0;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .control-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .control-input {
+            padding: 0.8rem 1rem;
+            border: 1px solid #ccd2e0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            flex: 1;
+            min-width: 200px;
+            outline: none;
+        }
+
+        .control-input:focus {
+            border-color: var(--commander-secondary);
+            box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.15);
+        }
+
+        .btn-action {
+            background: var(--commander-secondary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.6rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.2s;
+        }
+
+        .btn-action:hover {
+            background: var(--commander-primary);
+        }
+
+        .back-nav-btn {
+            display: inline-block;
+            background: #eee;
+            color: #333;
+            padding: 0.9rem 2.2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .back-nav-btn:hover {
+            background: #e0e0e0;
+            transform: translateY(-2px);
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #333;
+            color: white;
+            padding: 1rem 1.8rem;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            font-weight: 600;
+            display: none;
+            z-index: 1000;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Access Overlay */
+        .access-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .access-modal {
+            background: #ffffff;
+            padding: 2.5rem 2rem;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 420px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            text-align: center;
+            border-top: 5px solid var(--commander-primary);
+        }
+
+        .access-modal h2 {
+            color: var(--commander-primary);
+            margin-top: 0;
+            font-size: 1.6rem;
+        }
+
+        .access-modal p {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .access-input {
+            width: 100%;
+            padding: 0.9rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        .access-input:focus {
+            border-color: var(--commander-primary);
+            box-shadow: 0 0 0 3px rgba(30, 60, 114, 0.15);
+        }
+
+        .access-btn {
+            width: 100%;
+            padding: 0.9rem;
+            background: linear-gradient(135deg, var(--commander-primary), var(--commander-secondary));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .access-btn:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
+        }
+
+        .access-error {
+            color: #e74c3c;
+            font-size: 0.85rem;
+            margin-top: 0.8rem;
+            display: none;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- Access Security Overlay -->
+    <div id="commander-access-overlay" class="access-overlay">
+        <div class="access-modal">
+            <div style="font-size: 3rem; margin-bottom: 0.5rem;">🎖️</div>
+            <h2>Commander Access</h2>
+            <p>Please enter the commander security key to access sensitive controls.</p>
+            <input type="password" id="commander-access-input" class="access-input" placeholder="Enter Security Code..." />
+            <button id="commander-access-btn" class="access-btn">Unlock Controls</button>
+            <div id="commander-access-error" class="access-error">Invalid access code. Please try again.</div>
+            <div style="margin-top: 1.2rem;">
+                <a href="green-room.html" style="color: #888; font-size: 0.85rem; text-decoration: none;">← Cancel & Return to Green Room</a>
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <div class="logo-container">
+            <h1>IMSOFINE <span class="edition">9th Edition</span></h1>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <div class="commander-container">
+            <div class="commander-icon">🎖️</div>
+            <h2 class="commander-title">Commander Control Center</h2>
+            <div class="commander-badge">SECURITY LEVEL: TOP LEVEL / COMMAND</div>
+            <p class="commander-desc">
+                Welcome to the central command hub. Manage backstage readiness, direct score overrides, and critical competition operations securely.
+            </p>
+
+            <!-- Status Overview -->
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <h4>Competition State</h4>
+                    <div class="stat-num" style="color: #27ae60;">● ACTIVE</div>
+                </div>
+                <div class="stat-box">
+                    <h4>Registered Teams</h4>
+                    <div class="stat-num" id="stat-teams-count">4 Teams</div>
+                </div>
+                <div class="stat-box">
+                    <h4>Backstage Control</h4>
+                    <div class="stat-num">ENGAGED</div>
+                </div>
+            </div>
+
+            <!-- Quick Commander Tools Grid -->
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div>
+                        <h3><span>📊</span> Rank & Score Updater</h3>
+                        <p>View real-time participant evaluations, marks, and manage live competition team scores.</p>
+                    </div>
+                    <a href="score-updater.html" class="tool-btn">Launch Updater →</a>
+                </div>
+
+                <div class="tool-card">
+                    <div>
+                        <h3><span>👥</span> Team Rank Controller</h3>
+                        <p>Directly adjust and recalculate team points, step adjustments, and overall team standings.</p>
+                    </div>
+                    <a href="score-updater.html#team-rank" class="tool-btn">Manage Team Standings →</a>
+                </div>
+
+                <div class="tool-card">
+                    <div>
+                        <h3><span>📋</span> Participant Standings</h3>
+                        <p>Real-time scoreboard for individual participants with dynamic Firebase evaluation listeners.</p>
+                    </div>
+                    <a href="score-updater.html#participant-scores" class="tool-btn">Open Participant Table →</a>
+                </div>
+
+                <div class="tool-card">
+                    <div>
+                        <h3><span>📨</span> Judge Coordinator</h3>
+                        <p>Communicate criteria, assignments, and manage scoring protocols with official judges.</p>
+                    </div>
+                    <a href="judge-coordinator.html" class="tool-btn">Open Coordinator →</a>
+                </div>
+
+                <div class="tool-card">
+                    <div>
+                        <h3><span>📑</span> Admin Roster</h3>
+                        <p>Full student directory, search, team filter, and event registration lists.</p>
+                    </div>
+                    <a href="admin-dashboard.html" class="tool-btn">Admin Dashboard →</a>
+                </div>
+
+                <div class="tool-card">
+                    <div>
+                        <h3><span>📱</span> QR Generator</h3>
+                        <p>Generate, verify, and print participant admission & badge QR codes.</p>
+                    </div>
+                    <a href="qr-admin.html" class="tool-btn">Open QR Admin →</a>
+                </div>
+            </div>
+
+            <!-- Fast Action Broadcast / Announcement -->
+            <div class="control-panel">
+                <h3><span>📢</span> Commander Priority Broadcast</h3>
+                <p style="color: #666; font-size: 0.95rem; margin-bottom: 1rem;">
+                    Post an immediate announcement or memo to local session logs:
+                </p>
+                <div class="control-row">
+                    <input type="text" id="memo-input" class="control-input" placeholder="Type commander memo or announcement..." />
+                    <button class="btn-action" onclick="postCommanderMemo()">Publish Memo</button>
+                </div>
+                <div id="memo-display" style="font-size: 0.9rem; color: #555; font-style: italic;">No active memos published yet.</div>
+            </div>
+
+            <a href="green-room.html" class="back-nav-btn">← Back to Green Room</a>
+        </div>
+    </main>
+
+    <div id="toast" class="toast"></div>
+
+    <footer>
+        <p>&copy; 2026 Organized by Event Core | IMSOFINE</p>
+    </footer>
+
+    <script>
+        // Access code logic
+        const ACCESS_KEY = "Shaddad";
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const overlay = document.getElementById('commander-access-overlay');
+            const input = document.getElementById('commander-access-input');
+            const btn = document.getElementById('commander-access-btn');
+            const error = document.getElementById('commander-access-error');
+
+            // Check if already authenticated in this session
+            if (sessionStorage.getItem('commander_authenticated') === 'true') {
+                overlay.style.display = 'none';
+            } else {
+                input.focus();
+            }
+
+            function tryUnlock() {
+                if (input.value === ACCESS_KEY || input.value.trim().toLowerCase() === 'shaddad') {
+                    sessionStorage.setItem('commander_authenticated', 'true');
+                    overlay.style.opacity = '0';
+                    setTimeout(() => overlay.style.display = 'none', 300);
+                    showToast("🎖️ Commander clearance verified!");
+                } else {
+                    error.style.display = 'block';
+                    input.classList.add('error');
+                    setTimeout(() => error.style.display = 'none', 3500);
+                }
+            }
+
+            btn.addEventListener('click', tryUnlock);
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') tryUnlock();
+            });
+
+            // Update stats
+            loadStoredTeamCount();
+            loadStoredMemo();
+        });
+
+        function loadStoredTeamCount() {
+            try {
+                const teams = JSON.parse(localStorage.getItem('imsofine_team_scores_v1') || '[]');
+                if (teams.length > 0) {
+                    document.getElementById('stat-teams-count').textContent = `${teams.length} Teams`;
+                }
+            } catch(e) {}
+        }
+
+        function postCommanderMemo() {
+            const memoInput = document.getElementById('memo-input');
+            const text = (memoInput.value || '').trim();
+            if (!text) {
+                alert("Please enter a memo message.");
+                return;
+            }
+
+            const memo = `"${text}" — Issued at ${new Date().toLocaleTimeString()}`;
+            localStorage.setItem('commander_active_memo', memo);
+            document.getElementById('memo-display').innerHTML = `<strong>Current Active Memo:</strong> ${memo}`;
+            memoInput.value = '';
+            showToast("📢 Commander memo published!");
+        }
+
+        function loadStoredMemo() {
+            const memo = localStorage.getItem('commander_active_memo');
+            if (memo) {
+                document.getElementById('memo-display').innerHTML = `<strong>Current Active Memo:</strong> ${memo}`;
+            }
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
