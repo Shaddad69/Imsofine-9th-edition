@@ -370,7 +370,7 @@ main {
 
 /* ==========================================================================
    UNIVERSAL PROFESSIONAL TABLE DESIGN (Admin, Eval, Score Updater)
-   ========================================================================= */
+   ========================================================================== */
 .table-responsive,
 .score-table-wrapper {
     background: var(--card-bg) !important;
