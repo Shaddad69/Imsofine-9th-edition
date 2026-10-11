@@ -54,6 +54,8 @@
             font-weight: 600;
             box-shadow: 0 8px 20px rgba(74, 0, 224, 0.2);
             transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
         }
         .updater-option-btn:hover {
             transform: translateY(-4px);
@@ -72,10 +74,59 @@
             text-decoration: none;
             font-weight: 600;
             transition: background 0.3s ease, transform 0.3s ease;
+            cursor: pointer;
+            border: none;
         }
         .back-btn:hover {
             background: #e0e0e0;
             transform: translateY(-2px);
+        }
+
+        /* Participant Score Table Styling */
+        .score-table-wrapper {
+            overflow-x: auto;
+            background: var(--card-bg, #ffffff);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            border: 1px solid #f0f0f0;
+        }
+        .score-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+            text-align: left;
+        }
+        .score-table th {
+            background-color: #f8f9fa;
+            padding: 1.2rem 1rem;
+            border-bottom: 2px solid #eee;
+            font-weight: 600;
+            color: var(--text-color, #333);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+        .score-table td {
+            padding: 1.2rem 1rem;
+            border-bottom: 1px solid #f0f0f0;
+            color: #444;
+        }
+        .score-table tr:hover td {
+            background-color: #fafcff;
+        }
+        .score-badge {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(17, 153, 142, 0.2);
+            display: inline-block;
+        }
+        .score-judge-name {
+            font-weight: 600;
+            color: #222;
         }
     </style>
 </head>
@@ -94,9 +145,9 @@
                 Update participant ranks and scores directly.
             </p>
             
-            <!-- Added Options -->
-            <div class="updater-options">
-                <a href="#" class="updater-option-btn">
+            <!-- Options Menu -->
+            <div class="updater-options" id="main-options">
+                <a href="#participant-scores" class="updater-option-btn" id="btn-participant-score" onclick="openParticipantScores(event)">
                     <span class="option-icon">👤</span>
                     Participant Rank & Score
                 </a>
@@ -106,13 +157,133 @@
                 </a>
             </div>
 
-            <!-- Note: Modified the back button to be more subtle (gray) so the purple gradient buttons pop -->
-            <a href="green-room.html" class="back-btn">← Back to Green Room</a>
+            <!-- Participant Rank & Score Section -->
+            <div id="participant-score-section" style="display: none;">
+                <h3 style="color: var(--primary-color); margin-bottom: 1.5rem; font-size: 1.6rem;">Participant Rank & Score</h3>
+                <div class="score-table-wrapper">
+                    <table class="score-table">
+                        <thead>
+                            <tr>
+                                <th>Judge Name</th>
+                                <th>Program Name</th>
+                                <th>Marks/Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="score-table-body">
+                            <tr>
+                                <td colspan="3" style="text-align: center; padding: 3rem; color: #666;">
+                                    Waiting for live evaluations...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button id="btn-back-options" class="back-btn" onclick="closeParticipantScores(event)" style="margin-bottom: 2rem;">← Back to Options</button>
+            </div>
+
+            <a href="green-room.html" class="back-btn" id="btn-back-greenroom">← Back to Green Room</a>
         </div>
     </main>
 
     <footer>
         <p>&copy; 2026 Organized by Event Core | IMSOFINE</p>
     </footer>
+
+    <!-- UI Logic for toggling -->
+    <script>
+        function openParticipantScores(e) {
+            if (e) e.preventDefault();
+            document.getElementById('main-options').style.display = 'none';
+            const backGreenRoom = document.getElementById('btn-back-greenroom');
+            if (backGreenRoom) backGreenRoom.style.display = 'none';
+            document.getElementById('participant-score-section').style.display = 'block';
+            
+            // Trigger Firebase listener
+            window.dispatchEvent(new Event('startFirebaseListener'));
+        }
+
+        function closeParticipantScores(e) {
+            if (e) e.preventDefault();
+            document.getElementById('participant-score-section').style.display = 'none';
+            document.getElementById('main-options').style.display = 'flex';
+            const backGreenRoom = document.getElementById('btn-back-greenroom');
+            if (backGreenRoom) backGreenRoom.style.display = 'inline-block';
+            
+            window.dispatchEvent(new Event('stopFirebaseListener'));
+        }
+
+        // Check hash on load
+        window.addEventListener('DOMContentLoaded', () => {
+            if (window.location.hash === '#participant-scores') {
+                openParticipantScores();
+            }
+        });
+    </script>
+
+    <!-- Firebase SDK (Modular) & Live Updater Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        let db;
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+        } catch(e) {
+            console.error("Firebase initialization error:", e);
+        }
+
+        const tableBody = document.getElementById('score-table-body');
+        let unsubScores = null;
+
+        window.addEventListener('startFirebaseListener', () => {
+            if (db && !unsubScores) {
+                try {
+                    const q = query(collection(db, "evaluations"), orderBy("timestamp", "desc"));
+                    unsubScores = onSnapshot(q, (snapshot) => {
+                        tableBody.innerHTML = '';
+                        if (snapshot.empty) {
+                            tableBody.innerHTML = '<tr><td colspan="3" style="text-align: center; padding: 3rem; color: #666;">No evaluations submitted yet.</td></tr>';
+                            return;
+                        }
+
+                        snapshot.forEach(doc => {
+                            const data = doc.data();
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `
+                                <td><span class="score-judge-name">${data.judgeName || '-'}</span></td>
+                                <td>${data.programName || '-'}</td>
+                                <td><span class="score-badge">${data.score || '-'}</span></td>
+                            `;
+                            tableBody.appendChild(tr);
+                        });
+                    }, (error) => {
+                        console.error("Error fetching evaluations: ", error);
+                        tableBody.innerHTML = `<tr><td colspan="3" style="text-align: center; padding: 3rem; color: #c0392b;">Error fetching real-time data. Check Firebase config/permissions.</td></tr>`;
+                    });
+                } catch(e) {
+                    console.error("Firebase query error:", e);
+                }
+            } else if (!db) {
+                tableBody.innerHTML = '<tr><td colspan="3" style="text-align: center; padding: 3rem; color: #666;">Waiting for live evaluations... (Connect your Firebase configuration in the script tag to view real-time scores)</td></tr>';
+            }
+        });
+
+        window.addEventListener('stopFirebaseListener', () => {
+            if (unsubScores) {
+                unsubScores();
+                unsubScores = null;
+            }
+        });
+    </script>
 </body>
 </html>
